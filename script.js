@@ -171,10 +171,6 @@ document.addEventListener("DOMContentLoaded", function () {
             <img src="assets/blog.png" alt="Post icon">
             <span>LFS</span>
         </div>
-        <div class="file-item blog-post">
-            <img src="assets/blog.png" alt="Post icon">
-            <span>Test 2</span>
-        </div>
     </div>
     </div>
 `
