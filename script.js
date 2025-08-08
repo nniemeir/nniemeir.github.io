@@ -214,5 +214,36 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 
+    document.getElementById("aboutBtn").addEventListener("click", function () {
+        let aboutWindow = Array.from(document.querySelectorAll(".window"))
+            .find(win => win.querySelector(".title-bar")?.textContent.includes("👤 About Me"));
 
+        if (aboutWindow) {
+            aboutWindow.classList.toggle("hidden");
+            topZIndex++;
+            aboutWindow.style.zIndex = topZIndex;
+        } else {
+            fetch("about.html")
+                .then(response => {
+                    if (!response.ok) throw new Error("Could not load about.html");
+                    return response.text();
+                })
+                .then(htmlContent => {
+                    createWindow({
+                        title: "👤 About Me",
+                        contentHTML: `<div class="markdown-content">${htmlContent}</div>`,
+                        top: "120px",
+                        left: "120px"
+                    });
+                })
+                .catch(err => {
+                    createWindow({
+                        title: "👤 About Me",
+                        contentHTML: `<p>Error loading About Me: ${err.message}</p>`,
+                        top: "120px",
+                        left: "120px"
+                    });
+                });
+        }
+    });
 });
