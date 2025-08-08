@@ -339,3 +339,9 @@ body {
   visibility: visible;
   opacity: 1;
 }
+
+.blog-scroll {
+  width: 100%; /* or a fixed value like 380px */
+  max-height: 300px;
+  overflow-y: auto;
+}

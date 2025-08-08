@@ -166,6 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 title: "📝 Blog",
                 contentHTML: `
     <h3>Latest Posts</h3>
+      <div class="blog-scroll">
     <div class="file-grid">
         <div class="file-item blog-post">
             <img src="assets/blog.png" alt="Post icon">
@@ -175,6 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <img src="assets/blog.png" alt="Post icon">
             <span>Test 2</span>
         </div>
+    </div>
     </div>
 `
                 ,
