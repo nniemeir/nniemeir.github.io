@@ -133,8 +133,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // File item click opens project window
     document.querySelectorAll(".file-item").forEach(item => {
         const projectDetails = {
-            "cyllenian": "A minimalist https server",
-            "clowniSH": "A silly shell.",
+            "Cyllenian": "A minimalist HTTPS server with a thorough logging system.",
+            "ClowniSH": "A POSIX-like shell implementation that annoys the user by randomly overriding command output and teasing their behavior.",
+            "FilmFS": "A FUSE filesystem that logs viewing information to a SQLite database.",
+            "Halfway Across": "A text adventure with graphics and sound built in Qt.",
         };
 
         item.addEventListener("click", function () {
