@@ -195,13 +195,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         fetch(`blog/${fileName}`)
             .then(response => {
-                if (!response.ok) throw new Error("Markdown file not found" + fileName);
+                if (!response.ok) throw new Error("HTML file not found" + fileName);
                 return response.text();
             })
             .then(htmlContent => {
                 createWindow({
                     title: `📝 ${postTitle}`,
-                    contentHTML: `<div class="markdown-content">${htmlContent}</div>`,
+                    contentHTML: `<div class="post-content">${htmlContent}</div>`,
                     top: "100px",
                     left: "100px"
                 });
@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(htmlContent => {
                     createWindow({
                         title: "👤 About Me",
-                        contentHTML: `<div class="markdown-content">${htmlContent}</div>`,
+                        contentHTML: `<div class="post-content">${htmlContent}</div>`,
                         top: "120px",
                         left: "120px"
                     });
