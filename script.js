@@ -165,7 +165,6 @@ document.addEventListener("DOMContentLoaded", function () {
             blogWindow = createWindow({
                 title: "📝 Blog",
                 contentHTML: `
-    <h3>Latest Posts</h3>
       <div class="blog-scroll">
     <div class="file-grid">
         <div class="file-item blog-post">
