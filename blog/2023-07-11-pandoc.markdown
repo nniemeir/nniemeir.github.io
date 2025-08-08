@@ -1,0 +1,95 @@
+---
+layout: post
+title: "Overview Of Technologies Used In My Academic Workflow"
+date: 2023-07-11 02:00:00 -0500
+categories: jekyll update
+---
+### Markdown 
+Markup languages allow the user to structure and format the contents of a document through the use of symbols in accordance with the language's syntax: Markdown is one such language which prides itself on having easy to understand syntax and superior readability when compared to HTML, which is one reason why there has been a trend towards its use as a note-taking method. The rise in Markdown's popularity among students can also be attributed to the fact that the static site generator Jekyll, which is often used for hosting academic blogs, has introduced its users to the language by allowing posts to be written in markdown that it then converts into HTML which is formatted according to the site's stylesheets.
+
+*<center>List Formatting Syntax Comparison</center>*
+#### Markdown
+```
+1. Rotini
+2. Mushrooms
+3. Tomato Sauce
+4. Spices
+    1. Italian Seasoning
+    2. Garlic Powder
+    3. Minced Onions
+5. Some Quality Beef
+```
+#### HTML
+
+```
+<ol>
+<li>Rotini</li>
+<li>Mushrooms</li>
+<li>Tomato Sauce</li>
+<li>Spices
+<ol>
+<li>Italian Seasoning</li>
+<li>Garlic Powder</li>
+<li>Minced Onions</li>
+</li>
+<li>Some Quality Beef</li>
+</ol>
+```
+### LaTeX
+The markup language LaTeX, stylized as $$\LaTeX$$, is commonly used for academic writing in STEM fields due to its effectiveness in writing complex mathematics: however, the power of the program comes at the cost of a pretty steep learning curve that tends to put off newcomers. Students that anticipate needing LaTeX in the future are best off learning this language before they start their program if they are able to do so.
+
+### BibTeX
+BibTeX, stylized as $${\mathrm {B{\scriptstyle {IB}}\!T\!_{\displaystyle E}\!X} }$$, is a bibliography management application mainly used with LaTeX that keeps source information in a dedicated file that can then be formatted according to an academic standard of your choosing in the rendered document: an advantage of the tool being that its syntax is easier to decipher than standards like APA or MLA. 
+*<center>A BibTeX Bibliography Entry</center>*
+```
+@MISC{Nizamoglu2003-ql,
+  title        = "{Al-Kindi}, cryptography, code breaking and ciphers",
+  booktitle    = "Muslim Heritage",
+  author       = "Nizamoglu, Cem",
+  month        =  jun,
+  year         =  2003,
+  howpublished = "\url{https://muslimheritage.com/al-kindi-cryptography/}",
+  note         = "Accessed: 2022-3-18",
+}
+```
+
+### Pandoc
+Pandoc is a Free & Open Source application available on Windows and Unix-based desktop operating systems that enables users to convert files between text based file formats. Processing documents through Pandoc makes your workflow adaptable to a multitude of environments, this has the effect of mitigating most compatibility issues that would arise if the way a file format is handled changes over time. Many variants of Markdown exist that serve to augment the language, one of which is included within Pandoc: a useful feature of Pandoc's flavor is that LaTeX syntax can be included in Markdown documents and will be properly rendered if the file is converted to a compatible format. Pandoc can even be used to format Markdown in compliance with most academic standards, which is a non-negotiable feature for most students. 
+*<center>Heading Of An MLA Formatted Pandoc Markdown File</center>*
+```
+---
+title: paper title
+author: firstname lastname
+hauthor: lastname
+instructor: firstname lastname
+course: course name
+date: 24 Apr 2022
+bibliography: references.bib
+mainfont: Times New Roman
+header-includes:
+- \doublespacing
+nocite: |
+    @Nizamoglu2003-ql
+    @Bedirian2020-jm
+    @Druart2021-tz
+    @Wondrium2017-bh
+    @Hunt2018-lx,
+    @noauthor-undated-lh
+    @noauthor-undated-du
+    @noauthor_2009-po
+    @noauthor_1994-sk
+    @Komaroff1-fs
+---
+```
+
+### Learning These Technologies
+My knowledge of these applications and languages comes primarily from the following sources:  
+[Academic Writing in Plain Text](https://www.youtube.com/watch?v=hpAJMSS8pvs&list=PLXt-tu7G1H3tLeZgbbUmYjE0_kvbjA4YU)    
+[An Introduction To Markup](https://port.sas.ac.uk/mod/book/view.php?id=568&chapterid=335)  
+[LaTeX Documentation](https://www.latex-project.org/help/documentation/)  
+[Markdown Guide](https://www.markdownguide.org/)  
+[Pandoc Documentation](https://pandoc.org/)  
+[Tame the BeaST: The B to X of BibTeX](https://ctan.org/pkg/tamethebeast/?lang=en)
+
+### Conclusion
+While this workflow is more easily adaptable to other environments than using rich text editors like Microsoft Office or Google Docs, it has its share of caveats. While Markdown and BibTeX are fairly easy to grasp, a significant time investment is required to become proficient in LaTeX and Pandoc is not very intuitive to the average user given that it is a command line application. That being said, the tools discussed here can be invaluable to those pursuing a STEM degree and I advise anyone planning to pursue that path to at least have a working knowledge of them before they start their program. 

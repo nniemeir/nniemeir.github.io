@@ -1,0 +1,13 @@
+---
+layout: post
+title: "Update + Enterprise Computing I"
+date: 2024-07-06 12:22:19 -0500
+categories: jekyll update
+---
+
+### What I've Been Doing
+
+In fall of 2023, I undertook a capstone project for my AAS in Cybersecurity in which I deployed and hardened virtual machines representing enterprise networks under the Microsoft and Red Hat ecosystems. After receiving positive feedback on the project, I decided to further develop my deployment scripts and documentation to be in a more readable format. This is an ongoing project whose progress can be tracked on its Git repository.
+
+[Enterprise Computing I](https://github.com/nniemeir/Enterprise-Computing-I)
+
