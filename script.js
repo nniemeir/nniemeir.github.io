@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const contentText = projectDetails[projectName] || "No details available.";
 
             createWindow({
-                title: `📁 ${projectName}`,
+                title: `${projectName}`,
                 contentHTML: `
                     <p><strong>${projectName}</strong></p>
                     <p>${contentText}</p>
@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("blogBtn").addEventListener("click", function () {
         let blogWindow = Array.from(document.querySelectorAll(".window"))
-            .find(win => win.querySelector(".title-bar")?.textContent.includes("📝 Blog"));
+            .find(win => win.querySelector(".title-bar")?.textContent.includes("Blog"));
 
         if (blogWindow) {
             blogWindow.classList.toggle("hidden");
@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
             blogWindow.style.zIndex = topZIndex;
         } else {
             blogWindow = createWindow({
-                title: "📝 Blog",
+                title: "Blog",
                 contentHTML: `
       <div class="blog-scroll">
     <div class="file-grid">
@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(htmlContent => {
                 createWindow({
-                    title: `📝 ${postTitle}`,
+                    title: `${postTitle}`,
                     contentHTML: `<div class="post-content">${htmlContent}</div>`,
                     top: "100px",
                     left: "100px"
@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(err => {
                 createWindow({
-                    title: `📝 ${postTitle}`,
+                    title: `${postTitle}`,
                     contentHTML: `<p>Error loading post: ${err.message}</p>`,
                     top: "100px",
                     left: "100px"
@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("aboutBtn").addEventListener("click", function () {
         let aboutWindow = Array.from(document.querySelectorAll(".window"))
-            .find(win => win.querySelector(".title-bar")?.textContent.includes("👤 About Me"));
+            .find(win => win.querySelector(".title-bar")?.textContent.includes("About Me"));
 
         if (aboutWindow) {
             aboutWindow.classList.toggle("hidden");
@@ -229,7 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .then(htmlContent => {
                     createWindow({
-                        title: "👤 About Me",
+                        title: "About Me",
                         contentHTML: `<div class="post-content">${htmlContent}</div>`,
                         top: "120px",
                         left: "120px"
@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .catch(err => {
                     createWindow({
-                        title: "👤 About Me",
+                        title: "About Me",
                         contentHTML: `<p>Error loading About Me: ${err.message}</p>`,
                         top: "120px",
                         left: "120px"

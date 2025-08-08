@@ -225,12 +225,6 @@ body {
   color: black;
 }
 
-.title-bar {
-  background-color: #999999;
-  color: white;
-  padding: 0.5em;
-  font-weight: bold;
-}
 
 .title-bar {
   background-color: #999999;
@@ -239,9 +233,18 @@ body {
   font-weight: bold;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center; /* Center the title */
+  position: relative;
   border-bottom: 2px solid #666;
   box-shadow: inset -1px -1px #fff, inset 1px 1px #666;
+}
+
+.title-bar .close-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 0; /* Remove margin-left */
 }
 
 .close-btn {
