@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const crtFrame = document.querySelector(".crt");
     let topZIndex = 100;
 
-    // Utility: Create a window
     function createWindow({ title, contentHTML, width = "600px", top = "80px", left = "80px", isProject = false, isBlog = false }) {
         const win = document.createElement("div");
         win.className = "window";
@@ -23,19 +22,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         crtFrame.appendChild(win);
 
-        // Bring to front
         win.addEventListener("mousedown", () => {
             topZIndex++;
             win.style.zIndex = topZIndex;
         });
 
-        // Close button hides window and marks it as closed
         win.querySelector(".close-btn").addEventListener("click", () => {
             win.classList.add("hidden");
-            win.dataset.closed = "true"; // ✅ Mark as closed
+            win.dataset.closed = "true";
         });
 
-        // Make draggable
         const titleBar = win.querySelector(".title-bar");
         let dragX = 0, dragY = 0;
         let dragging = false;
@@ -74,7 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return win;
     }
 
-    // Original window setup
     const windowEl = document.querySelector(".window");
     const titleBar = windowEl.querySelector(".title-bar");
     const closeBtn = windowEl.querySelector(".close-btn");
@@ -124,18 +119,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     closeBtn.addEventListener("click", function () {
         windowEl.classList.add("hidden");
-        windowEl.dataset.closed = "true"; // ✅ Mark as closed
+        windowEl.dataset.closed = "true";
     });
 
-    // ✅ Toggle only project windows that are not closed
     document.getElementById("toggleBtn")?.addEventListener("click", function () {
         document.querySelectorAll(".window[data-project='true']").forEach(win => {
-            if (win.dataset.closed === "true") return; // ✅ Skip closed windows
+            if (win.dataset.closed === "true") return; 
             win.classList.toggle("hidden");
         });
     });
 
-    // ✅ File item click opens project window
     document.querySelectorAll(".file-item").forEach(item => {
         item.addEventListener("click", function () {
             const projectName = item.querySelector("span").textContent;
@@ -171,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const blogWindows = document.querySelectorAll(".window[data-blog='true']");
         if (blogWindows.length > 0) {
             blogWindows.forEach(win => {
-                if (win.dataset.closed === "true") return; // ✅ Skip closed blog windows
+                if (win.dataset.closed === "true") return;
                 win.classList.toggle("hidden");
             });
             return;
@@ -232,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .find(win => win.querySelector(".title-bar")?.textContent.includes("About Me"));
 
         if (aboutWindow) {
-            if (aboutWindow.dataset.closed === "true") return; // ✅ Skip if closed
+            if (aboutWindow.dataset.closed === "true") return;
             aboutWindow.classList.toggle("hidden");
             topZIndex++;
             aboutWindow.style.zIndex = topZIndex;
