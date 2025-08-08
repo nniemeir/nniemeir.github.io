@@ -272,14 +272,12 @@ body {
 .cde-dock {
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: #C6B2A8;
   padding: 4px;
   display: flex;
-  margin-right: 30%;
-  margin-left: 30%;
-  justify-content: start;
+  justify-content: center;
   border-top: 2px solid #999999;
   border-bottom: 2px solid #999999;
 }
