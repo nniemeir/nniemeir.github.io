@@ -3,9 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
     let topZIndex = 100;
 
     // Utility: Create a window
-    function createWindow({ title, contentHTML, width = "600px", top = "80px", left = "80px" }) {
+    function createWindow({ title, contentHTML, width = "600px", top = "80px", left = "80px", isProject = false, isBlog = false }) {
         const win = document.createElement("div");
         win.className = "window";
+        if (isProject) win.dataset.project = "true";
+        if (isBlog) win.dataset.blog = "true";
         win.style.width = width;
         win.style.top = top;
         win.style.left = left;
@@ -27,9 +29,10 @@ document.addEventListener("DOMContentLoaded", function () {
             win.style.zIndex = topZIndex;
         });
 
-        // Close button hides window
+        // Close button hides window and marks it as closed
         win.querySelector(".close-btn").addEventListener("click", () => {
             win.classList.add("hidden");
+            win.dataset.closed = "true"; // ✅ Mark as closed
         });
 
         // Make draggable
@@ -121,66 +124,75 @@ document.addEventListener("DOMContentLoaded", function () {
 
     closeBtn.addEventListener("click", function () {
         windowEl.classList.add("hidden");
+        windowEl.dataset.closed = "true"; // ✅ Mark as closed
     });
 
-    // Toggle all windows
-    document.getElementById("toggleBtn").addEventListener("click", function () {
-        document.querySelectorAll(".window").forEach(win => {
+    // ✅ Toggle only project windows that are not closed
+    document.getElementById("toggleBtn")?.addEventListener("click", function () {
+        document.querySelectorAll(".window[data-project='true']").forEach(win => {
+            if (win.dataset.closed === "true") return; // ✅ Skip closed windows
             win.classList.toggle("hidden");
         });
     });
 
-    // File item click opens project window
+    // ✅ File item click opens project window
     document.querySelectorAll(".file-item").forEach(item => {
-        const projectDetails = {
-            "Cyllenian": "A minimalist HTTPS server with a thorough logging system.",
-            "ClowniSH": "A POSIX-like shell implementation that annoys the user by randomly overriding command output and teasing their behavior.",
-            "FilmFS": "A FUSE filesystem that logs viewing information to a SQLite database.",
-            "Halfway Across": "A text adventure with graphics and sound built in Qt.",
-        };
-
         item.addEventListener("click", function () {
             const projectName = item.querySelector("span").textContent;
-            const contentText = projectDetails[projectName] || "No details available.";
+            const fileName = projectName.toLowerCase().replace(/\s+/g, "-") + ".html";
 
-            createWindow({
-                title: `${projectName}`,
-                contentHTML: `
-                    <p><strong>${projectName}</strong></p>
-                    <p>${contentText}</p>
-                `,
-                top: "50px",
-                left: "50px"
-            });
+            fetch(`projects/${fileName}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("HTML file not found: " + fileName);
+                    return response.text();
+                })
+                .then(htmlContent => {
+                    createWindow({
+                        title: `${projectName}`,
+                        contentHTML: `<div class="post-content">${htmlContent}</div>`,
+                        top: "50px",
+                        left: "50px",
+                        isProject: true
+                    });
+                })
+                .catch(err => {
+                    createWindow({
+                        title: `${projectName}`,
+                        contentHTML: `<p>Error loading project: ${err.message}</p>`,
+                        top: "50px",
+                        left: "50px",
+                        isProject: true
+                    });
+                });
         });
     });
 
-    document.getElementById("blogBtn").addEventListener("click", function () {
-        let blogWindow = Array.from(document.querySelectorAll(".window"))
-            .find(win => win.querySelector(".title-bar")?.textContent.includes("Blog"));
-
-        if (blogWindow) {
-            blogWindow.classList.toggle("hidden");
-            topZIndex++;
-            blogWindow.style.zIndex = topZIndex;
-        } else {
-            blogWindow = createWindow({
-                title: "Blog",
-                contentHTML: `
-      <div class="blog-scroll">
-    <div class="file-grid">
-        <div class="file-item blog-post">
-            <img src="assets/blog.png" alt="Post icon">
-            <span>LFS</span>
-        </div>
-    </div>
-    </div>
-`
-                ,
-                top: "80px",
-                left: "80px"
+    document.getElementById("blogBtn")?.addEventListener("click", function () {
+        const blogWindows = document.querySelectorAll(".window[data-blog='true']");
+        if (blogWindows.length > 0) {
+            blogWindows.forEach(win => {
+                if (win.dataset.closed === "true") return; // ✅ Skip closed blog windows
+                win.classList.toggle("hidden");
             });
+            return;
         }
+
+        createWindow({
+            title: "Blog",
+            contentHTML: `
+            <div class="blog-scroll">
+                <div class="file-grid">
+                    <div class="file-item blog-post">
+                        <img src="assets/blog.png" alt="Post icon">
+                        <span>LFS</span>
+                    </div>
+                </div>
+            </div>
+        `,
+            top: "80px",
+            left: "80px",
+            isBlog: true
+        });
     });
 
     document.addEventListener("click", function (e) {
@@ -192,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         fetch(`blog/${fileName}`)
             .then(response => {
-                if (!response.ok) throw new Error("HTML file not found" + fileName);
+                if (!response.ok) throw new Error("HTML file not found: " + fileName);
                 return response.text();
             })
             .then(htmlContent => {
@@ -200,7 +212,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     title: `${postTitle}`,
                     contentHTML: `<div class="post-content">${htmlContent}</div>`,
                     top: "100px",
-                    left: "100px"
+                    left: "100px",
+                    isBlog: true
                 });
             })
             .catch(err => {
@@ -208,7 +221,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     title: `${postTitle}`,
                     contentHTML: `<p>Error loading post: ${err.message}</p>`,
                     top: "100px",
-                    left: "100px"
+                    left: "100px",
+                    isBlog: true
                 });
             });
     });
@@ -218,6 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .find(win => win.querySelector(".title-bar")?.textContent.includes("About Me"));
 
         if (aboutWindow) {
+            if (aboutWindow.dataset.closed === "true") return; // ✅ Skip if closed
             aboutWindow.classList.toggle("hidden");
             topZIndex++;
             aboutWindow.style.zIndex = topZIndex;
