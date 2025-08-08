@@ -189,16 +189,14 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!blogPost) return;
 
         const postTitle = blogPost.querySelector("span").textContent;
-
-        const fileName = postTitle.toLowerCase().replace(/\s+/g, "-") + ".md";
+        const fileName = postTitle.toLowerCase().replace(/\s+/g, "-") + ".html";
 
         fetch(`blog/${fileName}`)
             .then(response => {
-                if (!response.ok) throw new Error("Markdown file not found: " + fileName);
+                if (!response.ok) throw new Error("Markdown file not found" + fileName);
                 return response.text();
             })
-            .then(markdownText => {
-                const htmlContent = marked.parse(markdownText); // Convert Markdown to HTML
+            .then(htmlContent => {
                 createWindow({
                     title: `📝 ${postTitle}`,
                     contentHTML: `<div class="markdown-content">${htmlContent}</div>`,
@@ -214,41 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     left: "100px"
                 });
             });
-
     });
 
 
-
-    document.getElementById("aboutBtn").addEventListener("click", function () {
-        let aboutWindow = Array.from(document.querySelectorAll(".window"))
-            .find(win => win.querySelector(".title-bar")?.textContent.includes("👤 About Me"));
-
-        if (aboutWindow) {
-            aboutWindow.classList.toggle("hidden");
-            topZIndex++;
-            aboutWindow.style.zIndex = topZIndex;
-        } else {
-            fetch("about.html")
-                .then(response => {
-                    if (!response.ok) throw new Error("Could not load about.html");
-                    return response.text();
-                })
-                .then(htmlContent => {
-                    createWindow({
-                        title: "👤 About Me",
-                        contentHTML: `<div class="markdown-content">${htmlContent}</div>`,
-                        top: "120px",
-                        left: "120px"
-                    });
-                })
-                .catch(err => {
-                    createWindow({
-                        title: "👤 About Me",
-                        contentHTML: `<p>Error loading About Me: ${err.message}</p>`,
-                        top: "120px",
-                        left: "120px"
-                    });
-                });
-        }
-    });
 });
