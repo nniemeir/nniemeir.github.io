@@ -1,6 +1,85 @@
-<p>A parser-based interactive fiction game with graphics and audio, Halfway Across follows a man named Edmond attempting to adapt to life
-    as a mountain man. How Edmond chooses to interact with the travelers that cross his path can have a profound impact
-    on his quality of life in the mountains, with some having the potential to be useful allies and others posing a
-    threat.</p>
-</br></br>
-<a href="https://github.com/nniemeir/halfway-across" target="_blank" rel="noopener noreferrer">Github</a>
+<p>Inspired by my love of slow-paced revisionist westerns like <i>Jeremiah Johnson</i> and <i>The Assassination of Jesse James by the Coward
+Robert Ford</i>, this parser-based interactive fiction game—enhanced with artwork and sound—follows a man adjusting to life
+as a mountain man in the late 1800s. I created this project to explore Object-Oriented Programming in C++ and GUI
+development with Qt.</p>
+
+<h3>Tech Stack</h3>
+<table style="width:100%">
+    <tr>
+        <th>Category</th>
+        <th>Technology Used</th>
+    </tr>
+    <tr>
+        <td>Language</td>
+        <td>C++</td>
+    </tr>
+    <tr>
+        <td>Compiler</td>
+        <td>GCC</td>
+    </tr>
+    <tr>
+        <td>Build System</td>
+        <td>CMake</td>
+    </tr>
+    <tr>
+        <td>Framework</td>
+        <td>Qt</td>
+    </tr>
+    <tr>
+        <td>Operating System</td>
+        <td>Linux, Windows</td>
+    </tr>
+    <tr>
+        <td>License</td>
+        <td>GNU General Public License V2</td>
+    </tr>
+</table>
+
+<h3>Gameplay Mechanics</h3>
+<ul>
+    <li><strong>Crafting:</strong> Use resources to make items that can aid in your survival</li>
+    <li><strong>Hunting:</strong> Obtain raw food and other resources by hunting animals in the valley</li>
+    <li><strong>Ice Fishing:</strong> Obtain raw food by catching fish at the lake</li>
+    <li><strong>Resource Management:</strong> Weigh the costs and benefits of keeping an item on your person during your
+        travels</li>
+    <li><strong>Social Interaction:</strong> Converse and trade with travelers, knowing that your dialogue choices will
+        impact how they perceive you</li>
+</ul>
+
+<h3>Challenges & Solutions</h3>
+<ul>
+    <li><strong>Complex Entities:</strong> It became clear while planning the project that several aspects of the game
+        would have many attributes (e.g.
+        entities, player, and world state), this made them ideal candidates for implementing as objects</li>
+    <li><strong>Commands & Aliases:</strong> Early in development, I didn't have a concrete idea of what commands and
+        aliases would be essential to make the game
+        intuitive. My solution to this was to periodically have friends and family members play the game while I noted
+        where
+        unsupported commands were encountered for later implementation. This testing also revealed that an individual's
+        manner of speaking can influence what filler words they might try to enter, so the game filters those out
+    </li>
+    <li><strong>Ambiguous Navigation:</strong> The visual style is intentionally hazy and lo-fi, which doesn't make it
+        clear what directions the player can move from their current position. I found that the best solution was to add
+        a compass to the UI that displays which directions are accessible</li>
+</ul>
+<h3>Lessons Learned</h3>
+<ul>
+    <li><strong>Header Guards:</strong> I discovered the importance of header guards when dealing with multiple source
+        files, which I had not needed in my
+        simpler C/C++ projects</li>
+    <li><strong>Interpreter Architecture:</strong> As a text adventure is essentially a specialized interpreter, writing
+        one introduced me to concepts like
+        Read-Eval-Print Loops and lexical tokenization</li>
+    <li><strong>Modular Design:</strong> This project required me to develop a sense of when something should be
+        modularized, as the projects that I built
+        before this weren't expansive enough to warrant splitting into multiple header and source
+        files</li>
+</ul>
+<h3>Future Plans</h3>
+<p> Although my focus has shifted toward systems programming and reverse engineering throughout my education, I intend
+    to return to this
+    project occasionally to expand on its mechanics and narrative.
+</p>
+
+<a href="https://github.com/nniemeir/halfway-across" target="_blank" rel="noopener noreferrer">View Source Code on
+    Github</a>

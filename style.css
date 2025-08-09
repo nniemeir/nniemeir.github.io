@@ -334,6 +334,10 @@ body {
   box-sizing: border-box;
 }
 
+table, th, td {
+  border:1px solid black;
+}
+
 .post-content {
   padding: 1em;
   font-family: monospace;
