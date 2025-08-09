@@ -1,3 +1,76 @@
-<p>A FUSE filesystem that logs video file viewing to an SQLite database.</p>
+<p>A FUSE filesystem that tracks video file viewings and logs them to a SQLite database. I built it to learn more about
+    SQLite as well as
+    filesystems and how they interact with userspace applications.
+</p>
+
+<h3>Tech Stack</h3>
+<table style="width:100%">
+    <tr>
+        <th>Category</th>
+        <th>Technology Used</th>
+    </tr>
+    <tr>
+        <td>Language</td>
+        <td>C, C++</td>
+    </tr>
+    <tr>
+        <td>Compiler</td>
+        <td>GCC</td>
+    </tr>
+    <tr>
+        <td>Build System</td>
+        <td>GNU Make, CMake</td>
+    </tr>
+    <tr>
+        <td>Libraries</td>
+        <td>libFUSE, SQLite</td>
+    </tr>
+    <tr>
+        <td>Frameworks</td>
+        <td>Qt (used for watchlistViewer)</td>
+    </tr>
+    <tr>
+        <td>Operating System</td>
+        <td>Linux (POSIX adherence assumed)</td>
+    </tr>
+    <tr>
+        <td>License</td>
+        <td>GNU General Public License V2</td>
+    </tr>
+</table>
+
+<h3>Features</h3>
+<ul>
+    <li>Allows read-only access to video files in configured library path within mountpoint</li>
+    <li>Logs film title, times watched, and last watched timestamp in ~/.filmfs/films.db</li>
+    <li>Inspect logs with Qt-based GUI <a href="https://github.com/nniemeir/filmfs" target="_blank"
+            rel="noopener noreferrer"><i>watchlistViewer</i></a></li>
+</ul>
+
+<h3>Challenges & Solutions</h3>
+<p>I learned that media players often perform multiple read operations during a single viewing of a file. If each read
+    were
+    logged independently, the watch count would be incremented multiple times per viewing. To address this, I stored the
+    PID
+    of the last read operation in a static variable initialized to -1 (since valid PIDs are non-negative). New reads are
+    only logged if the current PID is not the same as the last one.</p>
+
+<h3>Testing</h3>
+Automated testing is planned for the next iteration, this document will be updated at that point.
+
+<h3>Lessons Learned</h3>
+<p>While I already knew some basic SQL from a course I'd taken centered around Chuck Easttom's <i>Network Defense And
+        Countermeasures</i>, this project taught me a lot about the basics of working with databases programmatically
+    via
+    SQLite.</p>
 </br></br>
-<a href="https://github.com/nniemeir/filmfs" target="_blank" rel="noopener noreferrer">Github</a>
+<p>This project deepened my knowledge of the POSIX filesystem API, but was not quite as challenging as I would have
+    liked.</p>
+
+<h3>Future Plans</h3>
+<p>
+    While FUSE abstracts much of the complexity of filesystem development, I plan to challenge myself by writing a
+    kernel-level filesystem in the future to gain a more complete understanding of low-level I/O operations.
+</p>
+</br></br>
+<a href="https://github.com/nniemeir/filmfs" target="_blank" rel="noopener noreferrer">View Source Code on Github</a>
