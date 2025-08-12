@@ -238,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(htmlContent => {
                     createWindow({
                         title: "About Me",
-                        contentHTML: `<div class="post-content">${htmlContent}</div>`,
+                        contentHTML: `<div class="manpage">${htmlContent}</div>`,
                         top: "120px",
                         left: "120px"
                     });

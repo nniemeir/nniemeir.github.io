@@ -1,93 +1,102 @@
-<p>A POSIX-like shell implementation that occasionally overrides command output with humorous alternatives and teases the user on their behavior. I made this project to deepen my understanding of shell internals as well as the POSIX APIs that handle file I/O and process management. The project's "trollish" behavior is inspired by sentiments I've seen expressed during my time participating in FOSS forums over the past decade.</p>
+<p>A POSIX-like shell implementation that occasionally overrides command output with humorous alternatives and teases
+    the user on their behavior. I made this project to deepen my understanding of shell internals as well as the POSIX
+    APIs that handle file I/O and process management. The project's "trollish" behavior is inspired by sentiments I've
+    seen expressed during my time participating in FOSS forums over the past decade.</p>
 <h3>Tech Stack</h3>
 <table style="width:100%">
-  <tr>
-    <th>Category</th>
-    <th>Technology Used</th>
-  </tr>
-  <tr>
-    <td>Language</td>
-    <td>C</td>
-  </tr>
-  <tr>
-    <td>Compiler</td>
-    <td>GCC</td>
-  </tr>
-  <tr>
-    <td>Build System</td>
-    <td>GNU Make</td>
-  </tr>
-  <tr>
-    <td>Libraries</td>
-    <td>GNU Readline</td>
-  </tr>
-  <tr>
-    <td>Testing Framework</td>
-    <td>TCL Expect</td>
-  </tr>
-  <tr>
-    <td>Compression Tool</td>
-    <td>gzip</td>
-  </tr>
-  <tr>
-    <td>Operating System</td>
-    <td>Linux (POSIX adherence assumed)</td>
-  </tr>
-   <tr>
-    <td>License</td>
-    <td>GNU General Public License V2</td>
-  </tr>
+    <tr>
+        <th>Category</th>
+        <th>Technology Used</th>
+    </tr>
+    <tr>
+        <td>Language</td>
+        <td>C</td>
+    </tr>
+    <tr>
+        <td>Compiler</td>
+        <td>GCC</td>
+    </tr>
+    <tr>
+        <td>Build System</td>
+        <td>GNU Make</td>
+    </tr>
+    <tr>
+        <td>Libraries</td>
+        <td>GNU Readline</td>
+    </tr>
+    <tr>
+        <td>Testing Framework</td>
+        <td>TCL Expect</td>
+    </tr>
+    <tr>
+        <td>Compression Tool</td>
+        <td>gzip</td>
+    </tr>
+    <tr>
+        <td>Operating System</td>
+        <td>Linux (POSIX adherence assumed)</td>
+    </tr>
+    <tr>
+        <td>License</td>
+        <td>GNU General Public License V2</td>
+    </tr>
 </table>
 
 <h3>Core Features</h3>
 <ul>
-<li> Executes external commands via execvp</li>
-<li>Built-in commands (cd, exit, help)</li>
-<li>Background command execution</li>
-<li>Resolves environment variables</li>
-<li>Pipes</li>
-<li>I/O stream redirection</li>
-<li>Saves command history via GNU Readline</li>
+    <li> Executes external commands via execvp</li>
+    <li>Built-in commands (cd, exit, help)</li>
+    <li>Background command execution</li>
+    <li>Resolves environment variables</li>
+    <li>Pipes</li>
+    <li>I/O stream redirection</li>
+    <li>Saves command history via GNU Readline</li>
 </ul>
 <h3>Additional Tomfoolery*</h3>
 <ul>
-<li>Refers to the user by value of $USER, or Keith</li>
-<li>Randomly overrides the behavior of common commands</li>
-<li>Refuses to launch programs it disapproves of</li>
-<li>Teases the user based on the following:
-<ul>
-	<li>Desktop Environment / WM</li>
-	<li>Kernel version</li>
-	<li>Usage of common kernel forks</li>
-	<li>Common command typos</li>
-	<li>Terminal emulator being used</li>
-</ul>
+    <li>Refers to the user by value of $USER, or Keith</li>
+    <li>Randomly overrides the behavior of common commands</li>
+    <li>Refuses to launch programs it disapproves of</li>
+    <li>Teases the user based on the following:
+        <ul>
+            <li>Desktop Environment / WM</li>
+            <li>Kernel version</li>
+            <li>Usage of common kernel forks</li>
+            <li>Common command typos</li>
+            <li>Terminal emulator being used</li>
+        </ul>
 </ul>
 <p><i>* These features can be disabled by enabling polite mode.</i></p>
 
 <h3>Challenges & Solutions</h3>
-One of the challenges in implementing the core features was anticipating the various ways that a user may interact with the shell, a user piping 32 commands is not out of the question. 
-</br></br>
-The user could see the same teasing message multiple times during a single instance of the shell in earlier versions, but a flag was implemented to prevent this from occurring. 
-</br></br>
-The frequency of command overrides had to be calibrated to a low enough level to avoid making the project completely unusable.
+<p>One of the challenges in implementing the core features was anticipating the various ways that a user may interact with
+the shell, a user piping 32 commands is not out of the question.</p>
+
+<p>The user could see the same teasing message multiple times during a single instance of the shell in earlier versions,
+but a flag was implemented to prevent this from occurring.</p>
+
+<p>The frequency of command overrides had to be calibrated to a low enough level to avoid making the project completely
+unusable.</p>
 
 <h3>Testing</h3>
-I settled on using the TCL Expect testing framework, which was designed to automate work with interactive CLI applications. The script tests the following:
+I settled on using the TCL Expect testing framework, which was designed to automate work with interactive CLI
+applications. The script tests the following:
 <ul>
-<li>The default prompt has been set</li>
-<li>Command piping</li>
-<li>I/O redirection</li>
+    <li>The default prompt has been set</li>
+    <li>Command piping</li>
+    <li>I/O redirection</li>
 </ul>
 
 <h3>Lessons Learned</h3>
-I was familiar with the concept of REPL loops from writing a text adventure game in 2024, but it was interesting to see the differences between tokenizing a string using strtok instead of the more modern split method in QString.
-</br></br>
-I was surprised at how straightforward the dup2 function, which duplicates file descriptors, makes I/O stream redirection.
-</br></br>
-Since this was my first time implementing integration testing, TCL Expect and its syntax was entirely new to me. 
+<p>I was familiar with the concept of REPL loops from writing a text adventure game in 2024, but it was interesting to
+    see the differences between tokenizing a string using strtok instead of the more modern split method in QString.</p>
+<p>I was surprised at how straightforward the dup2 function, which duplicates file descriptors, makes I/O stream
+    redirection.</p>
+<p>Since this was my first time implementing integration testing, TCL Expect and its syntax was entirely new to me.</p>
 
 <h3>Future Plans</h3>
-<p>While I have taken the core features as far as I want to, I may revisit this in the future to expand on its personality.
-</br></br>
-<a href="https://github.com/nniemeir/clownish" target="_blank" rel="noopener noreferrer">View Source Code on Github</a>
+<p>While I have taken the core features as far as I want to, I may revisit this in the future to expand on its
+    personality.</p>
+
+<a href="https://github.com/nniemeir/clownish" target="_blank" rel="noopener noreferrer">View Source Code on
+    Github</a>
