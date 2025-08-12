@@ -165,8 +165,10 @@ body {
 }
 
 .crt {
-  width: 1024px;
-  height: 768px;
+  width: 100vw;
+  height: 100vh;
+  max-width: 1024px;
+  max-height: 768px;
   position: relative;
   background-color: var(--window-background);
   background-image: url("assets/bg.png");
@@ -373,17 +375,16 @@ td {
 }
 
 .manpage {
-    background-color: #1a1a1a;
-    color: #c5c8c6;
+    color: black;
     font-family: 'Courier New', Courier, monospace;
     padding: 24px;
-    border-radius: 6px;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-    margin: 40px auto;
-    white-space: pre-wrap;
     line-height: 1.6;
-    border: 1px solid #333;
     box-sizing: border-box;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .manpage pre::before {
@@ -394,7 +395,6 @@ td {
 }
 .fullscreen-manpage {
     position: absolute;
-    background-color: #1a1a1a;
     color: #c5c8c6;
     font-family: monospace;
     overflow: auto;
@@ -404,15 +404,16 @@ td {
 }
 
 .fullscreen-manpage .title-bar {
-    background-color: #111;
     font-weight: bold;
-    padding: 8px;
-    display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+    width: 100%;
+    max-width: 950px;
 }
 
 .fullscreen-manpage .content {
     padding: 20px;
+    max-height: none;
+    padding-bottom: 0;
 }
