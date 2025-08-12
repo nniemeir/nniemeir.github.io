@@ -12,6 +12,14 @@ document.addEventListener("DOMContentLoaded", function () {
         win.style.left = left;
         topZIndex = Math.min(topZIndex + 1, 9998);
         win.style.zIndex = topZIndex;
+        if (title === "About Me") {
+            win.classList.add("fullscreen-manpage");
+            win.style.top = "0";
+            win.style.left = "0";
+            win.style.width = "100%";
+            win.style.height = "100%";
+        }
+
 
         win.innerHTML = `
             <div class="title-bar">${title}
@@ -124,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("toggleBtn")?.addEventListener("click", function () {
         document.querySelectorAll(".window[data-project='true']").forEach(win => {
-            if (win.dataset.closed === "true") return; 
+            if (win.dataset.closed === "true") return;
             win.classList.toggle("hidden");
         });
     });

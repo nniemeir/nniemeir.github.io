@@ -393,3 +393,23 @@ td {
     margin-bottom: 16px;
     font-weight: bold;
 }
+.fullscreen-manpage {
+    position: absolute;
+    background-color: #1a1a1a;
+    color: #c5c8c6;
+    font-family: monospace;
+    overflow: auto;
+    border: none;
+}
+
+.fullscreen-manpage .title-bar {
+    background-color: #111;
+    color: #0f0;
+    font-weight: bold;
+    padding: 8px;
+    border-bottom: 1px solid #0f0;
+}
+
+.fullscreen-manpage .content {
+    padding: 20px;
+}
