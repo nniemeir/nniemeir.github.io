@@ -1,3 +1,93 @@
-<p>A minimalist HTTPS server with a logging system that supports log levels and timestamps</p>
-</br></br>
-<a href="https://github.com/nniemeir/cyllenian" target="_blank" rel="noopener noreferrer">Github</a>
+<p>A minimalist HTTPS server that I built to better understand HTTP, SSL, and the POSIX socket API. It proved to be a
+    highly educational way to begin exploring low level networking concepts.</p>
+
+<h3>Tech Stack</h3>
+<table style="width:100%">
+    <tr>
+        <th>Category</th>
+        <th>Technology Used</th>
+    </tr>
+    <tr>
+        <td>Language</td>
+        <td>C</td>
+    </tr>
+    <tr>
+        <td>Compiler</td>
+        <td>GCC</td>
+    </tr>
+    <tr>
+        <td>Build System</td>
+        <td>GNU Make</td>
+    </tr>
+    <tr>
+        <td>Libraries</td>
+        <td>OpenSSL</td>
+    </tr>
+    <tr>
+        <td>Operating System</td>
+        <td>Linux</td>
+    </tr>
+    <tr>
+        <td>License</td>
+        <td>GNU General Public License V2</td>
+    </tr>
+</table>
+
+<h3>Features</h3>
+<ul>
+    <li><strong>Supported HTTP Methods:</strong></li>
+    <ul>
+        <li>HEAD</li>
+        <li>GET</li>
+    </ul>
+    <li><strong>Supported HTTP Response Codes:</strong> 200 OK, 403 Forbidden, 404 Not Found, and 405 Method Not Allowed
+    </li>
+    <li>Concurrency via fork() for incoming connections</li>
+    <li>Graceful shutdown on SIGINT</li>
+    <li>Static File Serving</li>
+</ul>
+
+<h3>Challenges & Solutions</h3>
+<ul>
+    <li><strong>Handling binary files:</strong> I initially stored binary file buffers as signed char arrays, which
+        resulted in overflow due to the data exceeding the signed char range. Switching to unsigned fixed this.</li>
+    <li><strong>Address already in use:</strong> I encountered this error when terminating and re-launching the server
+        in quick succession. The solution was to implement signal handling to ensure that the socket is never left open
+        on shutdown.</li>
+</ul>
+
+<h3>Testing</h3>
+The project was tested manually on each build by ensuring the following:
+<ul>
+    <li>CSS and images were rendering properly</li>
+    <li>JavaScript executes as expected</li>
+    <li>Requests for nonexistent pages return a 404 response</li>
+    <li>Requests containing traversal patterns return a 403 response</li>
+    <li>PUT requests return a 405 response</li>
+    <li>Rapid restarts don't result in "Address already in use" error</li>
+</ul>
+
+<h3>Lessons Learned</h3>
+<p>HTTP is a text-based protocol, so parsing and constructing headers is simple string manipulation.</p>
+
+<p>The SSL structure and context must be freed in addition to closing the socket file descriptor. Since the user may
+    choose
+    to terminate the program at any point, it was essential to learn how to implement signal handling for SIGINT.</p>
+
+<p>In C, the range of a signed char is -128 to 127 while the range of an unsigned char is 0 to 255 because the former
+    uses the most significant bit for the sign. Binary data can use any value within the 8-bit range, so it is essential
+    to use an unsigned char array when storing binary data in a buffer.</p>
+
+<p>It is easy to run into corruption when trying to send binary data and text together for a variety of reasons, the
+    potential for the data to contain a null byte being chief among them, so sending the HTTP header and body separately
+    is ideal.</p>
+
+<p>Another protocol family supported by the POSIX socket API, PF_UNIX, is widely used on POSIX-like operating systems
+    for inter-process communication.</p>
+
+<h3>Future Plans</h3>
+<p>While I consider the project to be mostly feature complete, I plan to add integration testing and epoll support in
+    the future.</p>
+
+<a href="https://github.com/nniemeir/cyllenian" target="_blank" rel="noopener noreferrer">View Source Code on
+    Github</a>
