@@ -246,9 +246,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .catch(err => {
                     createWindow({
                         title: "About Me",
-                        contentHTML: `<p>Error loading About Me: ${err.message}</p>`,
-                        top: "120px",
-                        left: "120px"
+                        contentHTML: `<p>Error loading About Me: ${err.message}</p>`
                     });
                 });
         }
