@@ -233,10 +233,13 @@ document.addEventListener("DOMContentLoaded", function () {
             .find(win => win.querySelector(".title-bar")?.textContent.includes("About Me"));
 
         if (aboutWindow) {
-            if (aboutWindow.dataset.closed === "true") return;
-            aboutWindow.classList.toggle("hidden");
-            topZIndex++;
-            aboutWindow.style.zIndex = topZIndex;
+            if (aboutWindow.dataset.closed === "true") {
+                aboutWindow.classList.remove("hidden");
+                delete aboutWindow.dataset.closed;
+                topZIndex++;
+                aboutWindow.style.zIndex = topZIndex;
+                return;
+            }
         } else {
             fetch("about.html")
                 .then(response => {
