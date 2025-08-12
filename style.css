@@ -379,7 +379,6 @@ td {
     padding: 24px;
     border-radius: 6px;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-    max-width: 360px;
     margin: 40px auto;
     white-space: pre-wrap;
     line-height: 1.6;
@@ -400,14 +399,18 @@ td {
     font-family: monospace;
     overflow: auto;
     border: none;
+    width: 100%;
+    height: 100%;
 }
 
 .fullscreen-manpage .title-bar {
     background-color: #111;
-    color: #0f0;
     font-weight: bold;
     padding: 8px;
-    border-bottom: 1px solid #0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
 .fullscreen-manpage .content {
