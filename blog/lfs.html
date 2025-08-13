@@ -1,53 +1,48 @@
 <h2>Linux From Scratch 11.3</h2>
-<div class="tooltip">
-  <h5>Time: 1754645686</h5>
-  <span class="tooltiptext">08/08/2025</span>
-</div>
-    <h3>About Linux From Scratch</h3>
-    <p>GNU/Linux distributions are defined in large part by their package manager: these are programs that handle the
-      installation, updating, and configuration of other programs on the host. Linux From Scratch is a book that
-      teaches the reader a way to compile a functional GNU/Linux operating system without the use of such a program.
-      The reader is left with an
-      operating system akin to a base install of Arch Linux at the end of the project, and that is where the sequel
-      that I intend to cover at a later date comes in.
-    </p>
-    <h3>Why I Recommend The Project</h3>
-    <p>LFS can provide users with a greater understanding of: the standards that LFS is structured around, what
-      functionality each program within the project adds to an operating system, how cross-compilation is achieved, and
-      how they might troubleshoot compilation and configuration errors.</p>
+<h5>Date: 07/28/2023</h5>
+<h3>About Linux From Scratch</h3>
+<p>GNU/Linux distributions are defined in large part by their package manager: these are programs that handle the
+  installation, updating, and configuration of other programs on the host. Linux From Scratch is a book that
+  teaches the reader a way to compile a functional GNU/Linux operating system without the use of such a program.
+  The reader is left with an
+  operating system akin to a base install of Arch Linux at the end of the project, and that is where the sequel
+  book Beyond Linux From Scratch comes in.
+</p>
+<h3>Why I Recommend The Project</h3>
+<p>LFS can provide users with a greater understanding of: the standards that LFS is structured around, what
+  functionality each program within the project adds to an operating system, how cross-compilation is achieved, and
+  how they might troubleshoot compilation and configuration errors.</p>
 
-    <h3>Advice On Undertaking The Project</h3>
-
-    <ul>
-      <li>You should begin LFS with at least a basic knowledge of the GNU Core Utilities, disk partitioning, and
-        common network protocols.</li>
-      <li> I cannot stress this enough, read each page carefully to ensure that you are actually taking in the
-        information:
-        it is easy to just copy and paste the commands for each section, but you
-        will have learned far less by doing so.</li>
-      <li> The amount of time that it will take you to complete the project is dependent on your hardware and level
-        of experience, so don't
-        assume that a given user's install time is an indication of their competence or otherwise.</li>
-      <li> LFS requires you to install one of two init systems, SysVinit or Systemd, the latter is more commonly used in
-        modern distributions but you are more likely to find support for the former due to its age.</li>
-      <li> If you are using a distribution that utilizes SELinux on your host operating system, you are likely to
-        encounter
-        an error
-        when compiling Attr; if you are certain that the host will not be connected to the internet going forward,
-        you can resolve this issue by disabling SELinux and erasing the attributes it has assigned to each object in
-        your filesystem.</li>
-      <li> Setting the LFS variable within the primary user and root account's .bash_profile or .bashrc as explained
-        in <a href="https://www.linuxfromscratch.org/lfs/view/stable/chapter02/aboutlfs.html" target="_blank" rel="noopener noreferrer">Section 2.6</a> can save you a lot of
-        time, as I have seen a fair amount of readers damage their host by referencing the
-        variable in a command without it being set.</li>
-      <li> LFS does not carry over the MAKEFLAGS variable, which specifies how many jobs can be running at the same
-        time, when we enter the chroot environment: compile times can be greatly improved by reapplying the
-        MAKEFLAGS variable or specifying -jx (where x is the number of threads available) in each make command.
-      <li> If you are installing LFS in a virtualized environment, you may have to specify the UUID and PARTUUID of
-        your
-        root partition in your grub.cfg as explained in <a href="https://www.linuxfromscratch.org/lfs/view/stable/chapter10/grub.html" target="_blank" rel="noopener noreferrer">Section 10.4.4</a>to avoid boot failure.</li>
-      <li> Though there are some brave souls in the FOSS community who use LFS as their primary operating system, doing
-        so is
-        often discouraged due
-        to the complexities of upgrading the GNU C Library explained in <a href="https://www.linuxfromscratch.org/lfs/view/stable/chapter08/pkgmgt.html" target="_blank" rel="noopener noreferrer">Section 8.2.1</a>.</li>
-    </ul>
+<h3>Advice On Undertaking The Project</h3>
+<ul>
+  <li>A basic knowledge of the GNU Core Utilities, disk partitioning, and
+    common network protocols is recommended before beginning.</li>
+  <li> Try not to rush: it is easy to just copy and paste the commands for each section without processing what each
+    piece does.</li>
+  <li> LFS requires the installation of one of two init systems, SysVinit or Systemd, the latter is more commonly used
+    in
+    modern distributions, but the former has more documentation available due to its age.</li>
+  <li> If the host's operating system utilizes SELinux, it is fairly common to
+    encounter errors
+    when compiling Attr; LFS documentation and online discussion advise building on an install without SELinux or
+    manually disabling it and erasing the attributes it has assigned to each object in
+    the filesystem.</li>
+  <li> The LFS variable should be set within both the primary user and root account's .bash_profile or .bashrc as
+    explained
+    in <a href="https://www.linuxfromscratch.org/lfs/view/stable/chapter02/aboutlfs.html" target="_blank"
+      rel="noopener noreferrer">Section 2.6</a> as it is common for users to accidentally damage their host OS by referencing the
+    variable in a command without it being set for that user.</li>
+  <li> LFS does not carry over the MAKEFLAGS variable, which specifies how many jobs can be running at the same
+    time, when entering the chroot environment: compile times can be significantly reduced by reapplying the
+    MAKEFLAGS variable or specifying -jx (where x is the number of threads available) in each make command. </li>
+  <li> If the LFS install is intended to run in a virtualized environment, the UUID and PARTUUID of
+    the
+    root partition must generally be specified in grub.cfg as explained in <a
+      href="https://www.linuxfromscratch.org/lfs/view/stable/chapter10/grub.html" target="_blank"
+      rel="noopener noreferrer">Section 10.4.4</a> to avoid boot failure.</li>
+  <li> Using LFS as a daily driver
+    is often discouraged due
+    to the complexities of upgrading the GNU C Library, which many system utilities depend on, as explained in <a
+      href="https://www.linuxfromscratch.org/lfs/view/stable/chapter08/pkgmgt.html" target="_blank"
+      rel="noopener noreferrer">Section 8.2.1</a>.</li>
+</ul>
