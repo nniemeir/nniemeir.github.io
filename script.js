@@ -6,7 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const win = document.createElement("div");
         win.className = "window";
         if (isProject) win.dataset.project = "true";
-        if (isBlog) win.dataset.blog = "true";
+        if (isBlog) {
+            win.dataset.blog = "true";
+        }
         win.style.width = width;
         win.style.top = top;
         win.style.left = left;
@@ -14,16 +16,18 @@ document.addEventListener("DOMContentLoaded", function () {
         win.style.zIndex = topZIndex;
         if (title === "About Me") {
             win.classList.add("fullscreen-manpage");
-            win.style.top = "0";
-            win.style.left = "0";
-            win.style.width = "100%";
-            win.style.height = "100%";
+            win.style.top = "20px";
+            win.style.left = "20px";
+            win.style.width = "80%";
+            win.style.height = "80%";
+            win.style.backgroundColor = "#686E81";
+            win.style.border = "2px solid black";
         }
 
 
         win.innerHTML = `
             <div class="title-bar">${title}
-                <button class="close-btn" title="Close">✖</button>
+                <button class="close-btn" title="Close">-</button>
             </div>
             <div class="content">${contentHTML}</div>
         `;
@@ -37,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         win.querySelector(".close-btn").addEventListener("click", () => {
             win.classList.add("hidden");
-            win.dataset.closed = "true";
         });
 
         const titleBar = win.querySelector(".title-bar");
@@ -78,56 +81,31 @@ document.addEventListener("DOMContentLoaded", function () {
         return win;
     }
 
-    const windowEl = document.querySelector(".window");
-    const titleBar = windowEl.querySelector(".title-bar");
-    const closeBtn = windowEl.querySelector(".close-btn");
-
-    let isDragging = false;
-    let offsetX = 0;
-    let offsetY = 0;
-    let currentX = 100;
-    let currentY = 100;
-
-    windowEl.addEventListener("mousedown", () => {
-        topZIndex++;
-        windowEl.style.zIndex = topZIndex;
-    });
-
-    titleBar.addEventListener("mousedown", function (e) {
-        if (e.target === closeBtn) return;
-        isDragging = true;
-        offsetX = e.clientX - currentX;
-        offsetY = e.clientY - currentY;
-        document.body.style.userSelect = "none";
-    });
-
-    document.addEventListener("mousemove", function (e) {
-        if (isDragging) {
-            const crtRect = crtFrame.getBoundingClientRect();
-            let newX = e.clientX - offsetX;
-            let newY = e.clientY - offsetY;
-
-            const windowWidth = windowEl.offsetWidth;
-            const windowHeight = windowEl.offsetHeight;
-
-            newX = Math.max(0, Math.min(newX, crtRect.width - windowWidth));
-            newY = Math.max(0, Math.min(newY, crtRect.height - windowHeight));
-
-            currentX = newX;
-            currentY = newY;
-
-            windowEl.style.transform = `translate(${currentX}px, ${currentY}px)`;
-        }
-    });
-
-    document.addEventListener("mouseup", function () {
-        isDragging = false;
-        document.body.style.userSelect = "";
-    });
-
-    closeBtn.addEventListener("click", function () {
-        windowEl.classList.add("hidden");
-        windowEl.dataset.closed = "true";
+    createWindow({
+        title: "Projects",
+        contentHTML: `
+    <div class="file-grid">
+      <div class="file-item">
+        <img src="assets/server.png">
+        <span>Cyllenian</span>
+      </div>
+      <div class="file-item">
+        <img src="assets/terminal.png">
+        <span>ClowniSH</span>
+      </div>
+      <div class="file-item">
+        <img src="assets/video.png">
+        <span>FilmFS</span>
+      </div>
+      <div class="file-item">
+        <img src="assets/game.png">
+        <span>Halfway Across</span>
+      </div>
+    </div>
+  `,
+        top: "80px",
+        left: "80px",
+        isProject: true
     });
 
     document.getElementById("toggleBtn")?.addEventListener("click", function () {
@@ -174,6 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
             blogWindows.forEach(win => {
                 if (win.dataset.closed === "true") return;
                 win.classList.toggle("hidden");
+                delete win.dataset.closed;
             });
             return;
         }
@@ -233,33 +212,36 @@ document.addEventListener("DOMContentLoaded", function () {
             .find(win => win.querySelector(".title-bar")?.textContent.includes("About Me"));
 
         if (aboutWindow) {
-            if (aboutWindow.dataset.closed === "true") {
+            if (aboutWindow.classList.contains("hidden")) {
                 aboutWindow.classList.remove("hidden");
                 delete aboutWindow.dataset.closed;
-                topZIndex++;
-                aboutWindow.style.zIndex = topZIndex;
-                return;
+            } else {
+                aboutWindow.classList.add("hidden");
+                aboutWindow.dataset.closed = "true";
             }
-        } else {
-            fetch("about.html")
-                .then(response => {
-                    if (!response.ok) throw new Error("Could not load about.html");
-                    return response.text();
-                })
-                .then(htmlContent => {
-                    createWindow({
-                        title: "About Me",
-                        contentHTML: `<div class="manpage">${htmlContent}</div>`,
-                        top: "120px",
-                        left: "120px"
-                    });
-                })
-                .catch(err => {
-                    createWindow({
-                        title: "About Me",
-                        contentHTML: `<p>Error loading About Me: ${err.message}</p>`
-                    });
-                });
+            topZIndex++;
+            aboutWindow.style.zIndex = topZIndex;
+            return;
         }
+
+        fetch("about.html")
+            .then(response => {
+                if (!response.ok) throw new Error("Could not load about.html");
+                return response.text();
+            })
+            .then(htmlContent => {
+                createWindow({
+                    title: "About Me",
+                    contentHTML: `<div class="manpage">${htmlContent}</div>`,
+                    top: "120px",
+                    left: "120px"
+                });
+            })
+            .catch(err => {
+                createWindow({
+                    title: "About Me",
+                    contentHTML: `<p>Error loading About Me: ${err.message}</p>`
+                });
+            });
     });
 });
