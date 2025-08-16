@@ -370,7 +370,7 @@ pre {
   position: fixed;
   padding: 5px;
   background-color: #C5B2A9;
-  color: white;
+  color: black;
   text-align: center;
   white-space: nowrap;
   pointer-events: none;
@@ -378,6 +378,11 @@ pre {
   transform: translateY(-50px);
   z-index: 1000;
   transition: opacity 0.3s ease, transform 0.3s ease;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #404040;
+  border-right: 2px solid #404040;
+  box-shadow: inset -1px -1px #fff, inset 1px 1px #666;
 }
 
 .tooltip:hover .tooltiptext {

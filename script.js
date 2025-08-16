@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
         isProject: true
     });
 
-    document.getElementById("toggleBtn")?.addEventListener("click", function () {
+    document.getElementById("projectBtn")?.addEventListener("click", function () {
         document.querySelectorAll(".window[data-project='true']").forEach(win => {
             if (win.dataset.closed === "true") return;
             win.classList.toggle("hidden");
