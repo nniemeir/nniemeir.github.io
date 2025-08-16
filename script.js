@@ -2,20 +2,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const crtFrame = document.querySelector(".crt");
     let topZIndex = 100;
 
-    function createWindow({ title, contentHTML, width = "600px", top = "80px", left = "80px", isProject = false, isBlog = false }) {
+    function createWindow({ title, contentHTML, width = "600px", top = "80px", left = "80px", isPost = false, isProject = false, isBlog = false }) {
         const win = document.createElement("div");
         win.className = "window";
+
         if (isProject) win.dataset.project = "true";
+
         if (isBlog) {
             win.dataset.blog = "true";
         }
+
         win.style.width = width;
         win.style.top = top;
         win.style.left = left;
         topZIndex = Math.min(topZIndex + 1, 9998);
         win.style.zIndex = topZIndex;
+
+        if (isPost) {
+            win.style.backgroundColor = "#686E81"; // Soft gray
+        }
+
         if (title === "About Me") {
-            win.classList.add("fullscreen-manpage");
+            win.classList.add("manpage-contents");
             win.style.top = "20px";
             win.style.left = "20px";
             win.style.width = "80%";
@@ -35,6 +43,11 @@ document.addEventListener("DOMContentLoaded", function () {
         crtFrame.appendChild(win);
 
         win.addEventListener("mousedown", () => {
+            document.querySelectorAll(".window").forEach(w => {
+                w.classList.remove("active-window");
+            });
+            // 2. give it to this one
+            win.classList.add("active-window");
             topZIndex++;
             win.style.zIndex = topZIndex;
         });
@@ -131,7 +144,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         contentHTML: `<div class="post-content">${htmlContent}</div>`,
                         top: "50px",
                         left: "50px",
-                        isProject: true
+                        isProject: true,
+                        isPost: true
                     });
                 })
                 .catch(err => {
@@ -140,7 +154,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         contentHTML: `<p>Error loading project: ${err.message}</p>`,
                         top: "50px",
                         left: "50px",
-                        isProject: true
+                        isProject: true,
+                        isPost: true
                     });
                 });
         });
@@ -193,7 +208,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     contentHTML: `<div class="post-content">${htmlContent}</div>`,
                     top: "100px",
                     left: "100px",
-                    isBlog: true
+                    isBlog: true,
+                    isPost: true
                 });
             })
             .catch(err => {
@@ -202,7 +218,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     contentHTML: `<p>Error loading post: ${err.message}</p>`,
                     top: "100px",
                     left: "100px",
-                    isBlog: true
+                    isBlog: true,
+                    isPost: true
                 });
             });
     });
