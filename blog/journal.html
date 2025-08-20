@@ -2,14 +2,24 @@
 <p>This journal captures small discoveries I've made during my studies—insights worth remembering, even if they don't
     warrant a full post on their own.</p>
 
+<h4><strong>August 20th, 2025:</strong> Audio Permissions In Qt Creator Flatpak</h4>
+<p><em>Tags: #development, #foss, #qt</em></p>
+<p>Running a project with audio in the Qt Creator flatpak (<i>io.qt.QtCreator</i>) will result in a "No audio device
+    detected" message in the application output by default: this is because permission must be manually granted for the program to access
+    the PulseAudio sound server via Flatseal or by running the following command.</p>
+<pre class="code-block">
+flatpak override io.qt.QtCreator --user --socket=pulseaudio
+</pre>    
+
+
 <h4><strong>August 19th, 2025:</strong> GPS Permissions On Custom Android ROMs</h4>
 <p><em>Tags: #adb, #android, #foss, #gps</em></p>
 <p>Unlike stock Android, custom ROMs like Lineage do not give Google Mobile Services (GMS) location permissions by
     default. These permissions can be enabled by running the following commands.</p>
 <pre class="code-block">
-    adb shell pm grant com.google.android.gms android.permission.ACCESS_COARSE_LOCATION
+adb shell pm grant com.google.android.gms android.permission.ACCESS_COARSE_LOCATION
     
-    adb shell pm grant com.google.android.gms android.permission.ACCESS_FINE_LOCATION
+adb shell pm grant com.google.android.gms android.permission.ACCESS_FINE_LOCATION
 </pre>
 
 <hr>
