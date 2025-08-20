@@ -114,8 +114,8 @@ body {
 }
 
 a {
-  color: #5AB3E8;
   text-decoration: underline;
+  color: #00BFFF;
 }
 
 a:hover {
@@ -123,11 +123,15 @@ a:hover {
 }
 
 a:visited {
-  color: #4B91B8;
+  color: #00BFFF;
 }
 
 a:active {
   color: #2E6C8A;
+}
+
+hr {
+  border: 1px solid #00BFFF;
 }
 
 pre {
@@ -135,6 +139,7 @@ pre {
   word-wrap: break-word;
   color: white;
 }
+
 
 .hidden {
   display: none;
@@ -465,6 +470,19 @@ pre {
 .project-content h2 {
   border-bottom: 1px solid #ccc;
   margin-top: 1em;
+}
+
+.code-block {
+  color: white;
+  margin: 1em 0;
+  width: 100%;
+  background-color: #5E6374;
+  border-top: 2px solid #4F5567;
+  border-left: 2px solid #4F5567;
+  border-bottom: 2px solid #8A8F9E;
+  border-right: 2px solid #8A8F9E;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 /* Manpage mockup for About Me */

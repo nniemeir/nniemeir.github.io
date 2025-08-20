@@ -1,0 +1,23 @@
+<h2>Study Journal</h2>
+<p>This journal captures small discoveries I've made during my studies—insights worth remembering, even if they don't
+    warrant a full post on their own.</p>
+
+<h4><strong>August 19th, 2025:</strong> GPS Permissions On Custom Android ROMs</h4>
+<p><em>Tags: #adb, #android, #foss, #gps</em></p>
+<p>Unlike stock Android, custom ROMs like Lineage do not give Google Mobile Services (GMS) location permissions by
+    default. These permissions can be enabled by running the following commands.</p>
+<pre class="code-block">
+    adb shell pm grant com.google.android.gms android.permission.ACCESS_COARSE_LOCATION
+    
+    adb shell pm grant com.google.android.gms android.permission.ACCESS_FINE_LOCATION
+</pre>
+
+<hr>
+
+<h4><strong>August 14th, 2025:</strong> Proprietary Firmware on Fedora Linux</h4>
+<p><em>Tags: #fedora, #firmware, #foss, #linux</em></p>
+<p>Fedora has adopted a stricter stance on including proprietary software in the standard repositories in the past two
+    years. RPM fusion free and non-free repos often need to be enabled by following the steps outlined in <a
+        href="https://docs.fedoraproject.org/en-US/quick-docs/rpmfusion-setup/" target="_blank"
+        rel="noopener noreferrer">Fedora's documentation</a> to ensure
+    proper hardware support.</p>
