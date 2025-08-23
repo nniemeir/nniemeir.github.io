@@ -1,0 +1,27 @@
+<h2>NVIDIA on Fedora</h2>
+<h5>Date: August 22nd, 2025</h5>
+<p>If you installed Fedora on a system with an NVIDIA GPU, you will have reduced graphics performance
+    out of the box: the reasons for that are fairly simple. Fedora Linux
+    ships a FOSS driver for NVIDIA GPUs called <b>nouveau</b>, developed through some clever reverse
+    engineering work beginning in 2005: this was necessary due to NVIDIA's decision not to fully open-source their GPU
+    drivers.</p>
+
+<h3>Why Nouveau Doesn't Always Cut It</h3>
+<p>Nouveau is operating at a disadvantage due to limited access to hardware internals, which results in noticeably worse
+    performance and lack of certain features that the user may require (e.g. CUDA). For example, <i>Batman: Arkham
+        Knight</i> only gave me 25% of the framerate I achieved on the proprietary driver running on a GTX 1650: this is
+    insufficient for users that wish to maximize performance for their hardware.</p>
+
+<h3>Installing NVIDIA's Proprietary Drivers On Fedora</h3>
+<p>It is advised to follow
+    RPM Fusion's <a href="https://rpmfusion.org/Howto/NVIDIA" target="_blank" rel="noopener noreferrer">guide</a> to
+    install the
+    proprietary drivers.</p>
+<p>On the Fedora Sway spin, which drops GNOME in favor of Sway window manager there's one more step. The Sway development team has made it very clear
+    that they will not debug issues relating to proprietary GPU drivers, and by default, Sway refuses to launch with
+    them. To bypass this, you
+    must run Sway with the --unsupported-gpu option set. I opted to alias sway
+    like so in my POSIX-like shell configuration :</p>
+<pre class="code-block">
+alias sway='sway --unsupported-gpu'
+</pre>

@@ -5,11 +5,12 @@
 <h4><strong>August 20th, 2025:</strong> Audio Permissions In Qt Creator Flatpak</h4>
 <p><em>Tags: #development, #foss, #qt</em></p>
 <p>Running a project with audio in the Qt Creator flatpak (<i>io.qt.QtCreator</i>) will result in a "No audio device
-    detected" message in the application output by default: this is because permission must be manually granted for the program to access
+    detected" message in the application output by default: this is because permission must be manually granted for the
+    program to access
     the PulseAudio sound server via Flatseal or by running the following command.</p>
 <pre class="code-block">
 flatpak override io.qt.QtCreator --user --socket=pulseaudio
-</pre>    
+</pre>
 
 <hr>
 

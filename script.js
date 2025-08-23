@@ -177,15 +177,19 @@ document.addEventListener("DOMContentLoaded", function () {
             contentHTML: `
             <div class="blog-scroll">
                 <div class="file-grid">
+                 <div class="file-item blog-post">
+                        <img src="assets/blog.png" alt="Post icon">
+                        <span class="file-label">Journal</span>
+                    </div>
                     <div class="file-item blog-post">
                         <img src="assets/blog.png" alt="Post icon">
-                        <span>LFS</span>
+                        <span class="file-label">NVDA_Fedora</span>
                     </div>
-                     <div class="file-item blog-post">
+                    <div class="file-item blog-post">
                         <img src="assets/blog.png" alt="Post icon">
-                        <span>Journal</span>
+                        <span class="file-label">LFS</span>
                     </div>
-                </div>
+            </div>
             </div>
         `,
             top: "80px",

@@ -311,6 +311,18 @@ pre {
   transition: transform 0.2s ease;
 }
 
+.file-label {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2; /* limits to 2 lines */
+  -webkit-box-orient: vertical;
+}
+
 .file-item img {
   width: 48px;
   height: 48px;
