@@ -1,0 +1,86 @@
+<h2>On Media Consumption & Logging</h2>
+<h5>Date: 2025-10-31</h5>
+<h3>Why Log Media Consumption?</h3>
+<p>Memory is fickle, most of us have struggled to remember what we've read, watched, played, or listened to. I believe
+    that
+    our memory of things is often the only proof that they actually happened, and many Americans spend hours of their
+    lives
+    engaging with the arts that it seems a waste to let any of it be entirely forgotten. Logging our engagement also
+    makes
+    it easier to analyze our media engagement in a variety of ways:</p>
+<ul>
+    <li>Find common patterns in media that we are drawn to</li>
+    <li>Recommend media to others based on common themes</li>
+    <li>For arts students and professionals: have a larger repository to pull from when writing about the arts</li>
+</ul>
+
+<h3>Challenges To Logging Media Consumption</h3>
+<p>Recommendation algorithms and platform policies can have a profound effect on our media consumption and how we engage
+    with the world.
+    Media streaming and curation platforms choose to delete content from their databases often, as is their right. This
+    presents a problem for those wishing to
+    fully log their media engagement or engage with the arts on their own terms: when content is removed, your history
+    goes with it.</p>
+<h3>My Approach</h3>
+<p>My solution to this problem is as simple as it gets, a set of CSV files that I keep in a private Git repository.
+    Using CSV files keeps logging portable, versionable, and easily searchable.</p>
+<ul>
+    <li>books.csv - Books that I've read (103 entries)</li>
+    <li>channels.csv - active channels on various platforms whose content I enjoy (48 entries)</li>
+    <li>childrens_books.csv - Children's and YA books that I've read (81 entries)</li>
+    <li>comics.csv - Graphic novels that I've read (686 entries)</li>
+    <li>games.csv - Games that I've completed (365 entries)</li>
+    <li>music.csv - Albums I've listened to (1267 entries)</li>
+    <li>TBL.csv - Albums that I've been recommended (435 entries)</li>
+    <li>TBR.csv - Books that I've been recommended (77 entries)</li>
+</ul>
+
+<p>A luxury of CSV files and spreadsheets is that it is entirely up to the individual what each field represents: mine
+    are not particularly elaborate, but there is infinite room for expansion.</p>
+
+<h3>Examples</h3>
+<p>I delimit fields with a semicolon instead of a comma because a significant number of titles include commas.</p>
+<h4>books.csv, childrens_books.csv, & comics.csv</h4>
+<p>Title;Author(s);Genre;Date
+    </br>Moby Dick;Herman Melville;Adventure;08/12/2022</p>
+<h4>channels.csv</h4>
+<p>Title;Platform;Genre;Link
+    </br>Bread on Penguins;YouTube;Technology;https://www.youtube.com/channel/UCwHwDuNd9lCdA7chyyquDXw</p>
+<h4>games.csv</h4>
+<p>Title;Platform;Genre;Date
+    </br>Metal Gear Solid V: The Phantom Pain;PC;Stealth;9/20/2015</p>
+<h4>music.csv</h4>
+<p>Artist;Album;Genre;Date
+    </br>Tom Waits;Nighthawks at the Diner;Blues;05/19/2020</p>
+<h4>TBL.csv</h4>
+<p>Artist;Album;Genre
+    </br>Hulder;Verses In Oath;Metal, Black</p>
+<h4>TBR.csv</h4>
+<p>Title;Author;Genre
+    </br>The Buffalo Hunter Hunter;Stephen Graham Jones;Horror</p>
+
+<h3>Escaping The Noise</h3>
+<p>The internet was once a haven for hyperspecific communities, but it has been drifting further and further towards
+    black box recommendation algorithms that push the statistically safest content.</p>
+
+<p>I do not believe that the problem is corporate ownership itself—private companies can run however they like—but the
+    vendor lock-in that follows. Your watch history, your playlists, even the fact that you read a book can be erased
+    overnight.</p>
+
+<p>The current era often feels like a blur of content and messaging from every conceivable corner of society.
+    There is not a realistic way to avoid this noise entirely, but I've found a few methods that help control it.</p>
+
+<h4>Discovering New Media</h4>
+Instead of relying on algorithms to find new music, I follow labels directly through their website if they have one or
+their Bandcamp if they do not. I find new labels and standout albums by checking the top posts on genre subreddits about
+twice a year and interacting with people at record stores. I apply the same approach to literature.
+
+<h4>YouTube Playlists</h4>
+Rather than using YouTube playlists that require a Google account (which results in targeted recommendations), I copy
+the links to each video (one per line) into a file which I save with the extension m3u, which can be played with MPV as
+a playlist (provided you have yt-dlp installed).
+
+<h4>Channels</h4>
+Most streaming services (e.g. Twitch, YouTube) provide RSS feeds for the channels they host, allowing you to centralize
+your feed without the intrusion of recommendation algorithms or advertisements. I personally like Fluent Reader (GUI)
+and Newsboat (CLI).

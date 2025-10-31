@@ -177,6 +177,10 @@ document.addEventListener("DOMContentLoaded", function () {
             contentHTML: `
             <div class="blog-scroll">
                 <div class="file-grid">
+                <div class="file-item blog-post">
+                        <img src="assets/blog.png" alt="Post icon">
+                        <span class="file-label">Media_Logging</span>
+                    </div>
                  <div class="file-item blog-post">
                         <img src="assets/blog.png" alt="Post icon">
                         <span class="file-label">Journal</span>
