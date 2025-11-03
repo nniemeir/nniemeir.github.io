@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
         win.style.zIndex = topZIndex;
 
         if (isPost) {
-            win.style.backgroundColor = "#686E81"; // Soft gray
+            win.style.backgroundColor = "#4a3f35"; // Soft gray
         }
 
         if (title === "About Me") {
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
             win.style.left = "20px";
             win.style.width = "80%";
             win.style.height = "80%";
-            win.style.backgroundColor = "#686E81";
+            win.style.backgroundColor = "#4a3f35";
             win.style.border = "2px solid black";
         }
 
