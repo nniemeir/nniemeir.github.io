@@ -98,7 +98,11 @@ document.addEventListener("DOMContentLoaded", function () {
         title: "Projects",
         contentHTML: `
     <div class="file-grid">
-      <div class="file-item">
+    <div class="file-item">
+        <img src="assets/moon.png">
+        <span>Orlok</span>
+      </div>  
+    <div class="file-item">
         <img src="assets/server.png">
         <span>Cyllenian</span>
       </div>
