@@ -1,4 +1,5 @@
-<p>A minimal strace-like process tracing utility for x86_64 Linux systems. I designed it to obtain a clearer understanding
+<p>A minimal strace-like process tracing utility for x86_64 Linux systems. I designed it to obtain a clearer
+    understanding
     of how system calls work and how process tracers like strace are able to gather detailed syscall information from
     the kernel. The complexity in this project primarily lies in understanding the
     ptrace API and the basics of the syscalls being traced (their
@@ -56,10 +57,12 @@
     <li><strong>Output Parameters:</strong> Initially, I read all register values except for rax (return value) on
         syscall entry. This is a flawed approach because many syscalls have a buffer as one or more of their parameters
         which does not contain useful information until the syscall exits.</li>
-    <li><strong>Execve:</strong> Since the first stop in TRACEME mode is caused by execve, we have to toggle the
-        entering_syscall state without inspecting it as a syscall.</li>
     <li><strong>Tracing State:</strong> ptrace doesn't distinguish between syscall entry and exit, so I had to implement
         an entering_syscall flag so that we know when to read output parameters and return value.</li>
+    <li><strong>Execve:</strong> I noticed early on that the entering_syscall flag was being offset on first stop,
+        resulting in garbage output for output parameters and return values. Since the first stop in TRACEME mode is
+        caused by execve, we have to toggle the
+        entering_syscall state without inspecting it as a syscall to avoid said offset.</li>
 </ul>
 
 <h3>Testing</h3>
@@ -81,7 +84,7 @@
 
 <p>If the child process exits via calling exit() or exit_group(), running PTRACE_SYSCALL will set errno to ESRCH (No
     such
-    process). We ignore this entirely in orlok because the next wait() call will return with WIFEXITED(status) or
+    process). We ignore this entirely in Orlok because the next wait() call will return with WIFEXITED(status) or
     WIFSIGNALED(status), indicating process killed by exit or signal respectively, and the tracing loop will break
     properly
     at that point with wait reaping the zombie.</p>
@@ -135,7 +138,8 @@
     then terminate at)</p>
 
 <h3>Future Plans</h3>
-<p>Past this point, pursuing feature parity with strace gives diminishing returns education-wise.</p>
+<p>Pursuing complete feature parity with strace yields diminishing returns education-wise. If anything, I may implement
+    logging of signals.</p>
 
 <a href="https://github.com/nniemeir/orlok" target="_blank" rel="noopener noreferrer">View Source Code on
     Github</a>
