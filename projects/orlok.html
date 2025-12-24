@@ -2,159 +2,179 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Orlok | Niemeir Computing</title>
-  <link rel="stylesheet" href="../style.css">
+    <meta charset="UTF-8">
+    <title>Orlok | Niemeir Computing</title>
+    <link rel="stylesheet" href="../style.css">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
 
 </head>
 
 <body>
-<h1>Orlok</h1>
-<p>A minimal strace-like process tracing utility for x86_64 Linux systems. I designed it to obtain a clearer
-    understanding
-    of how system calls work and how process tracers like strace are able to gather detailed syscall information from
-    the kernel. The complexity in this project primarily lies in understanding the
-    ptrace API and the basics of the syscalls being traced (their
-    signatures, input and output parameters)</p>
+    <h1>Orlok</h1>
+    <p>A minimal strace-like process tracing utility for x86_64 Linux systems. I designed it to obtain a clearer
+        understanding
+        of how system calls work and how process tracers like strace are able to gather detailed syscall information
+        from
+        the kernel. The complexity in this project primarily lies in understanding the
+        ptrace API and the basics of the syscalls being traced (their
+        signatures, input and output parameters)</p>
 
-<h2>Tech Stack</h2>
-<table style="width:100%">
-    <tr>
-        <th>Category</th>
-        <th>Technology Used</th>
-    </tr>
-    <tr>
-        <td>Language</td>
-        <td>C</td>
-    </tr>
-    <tr>
-        <td>Compiler</td>
-        <td>GCC</td>
-    </tr>
-    <tr>
-        <td>Build System</td>
-        <td>GNU Make</td>
-    </tr>
-    <tr>
-        <td>Libraries</td>
-        <td>Standard C Library, Linux kernel headers</td>
-    </tr>
-    <tr>
-        <td>Operating System</td>
-        <td>Linux</td>
-    </tr>
-    <tr>
-        <td>License</td>
-        <td>GNU General Public License V2</td>
-    </tr>
-</table>
+    <h2>Tech Stack</h2>
+    <table style="width:100%">
+        <tr>
+            <th>Category</th>
+            <th>Technology Used</th>
+        </tr>
+        <tr>
+            <td>Language</td>
+            <td>C</td>
+        </tr>
+        <tr>
+            <td>Compiler</td>
+            <td>GCC</td>
+        </tr>
+        <tr>
+            <td>Build System</td>
+            <td>GNU Make</td>
+        </tr>
+        <tr>
+            <td>Libraries</td>
+            <td>Standard C Library, Linux kernel headers</td>
+        </tr>
+        <tr>
+            <td>Operating System</td>
+            <td>Linux</td>
+        </tr>
+        <tr>
+            <td>License</td>
+            <td>GNU General Public License V2</td>
+        </tr>
+    </table>
 
-<h2>Features</h2>
-<ul>
-    <li>Tracing an existing process via PID</li>
-    <li>Forking a new process to trace</li>
-    <li>Tracing a variety of common syscalls:</li>
+    <h2>Features</h2>
     <ul>
-        <li><strong>File Descriptors:</strong> dup, dup2</li>
-        <li><strong>File I/O:</strong> access, chdir, close, fstat, getcwd, lseek, lstat, openat, pipe, read, stat,
-            write
-        </li>
-        <li><strong>Networking:</strong> accept, bind, connect, listen, socket </li>
-        <li><strong>Processes:</strong> brk, clone, execve, exit, exit_group, fork, getpid, getppid, mmap, munmap</li>
+        <li>Tracing an existing process via PID</li>
+        <li>Forking a new process to trace</li>
+        <li>Tracing a variety of common syscalls:</li>
+        <ul>
+            <li><strong>File Descriptors:</strong> dup, dup2</li>
+            <li><strong>File I/O:</strong> access, chdir, close, fstat, getcwd, lseek, lstat, openat, pipe, read, stat,
+                write
+            </li>
+            <li><strong>Networking:</strong> accept, bind, connect, listen, socket </li>
+            <li><strong>Processes:</strong> brk, clone, execve, exit, exit_group, fork, getpid, getppid, mmap, munmap
+            </li>
+        </ul>
     </ul>
-</ul>
 
-<h2>Challenges & Solutions</h2>
-<ul>
-    <li><strong>Output Parameters:</strong> Initially, I read all register values except for rax (return value) on
-        syscall entry. This is a flawed approach because many syscalls have a buffer as one or more of their parameters
-        which does not contain useful information until the syscall exits.</li>
-    <li><strong>Tracing State:</strong> ptrace doesn't distinguish between syscall entry and exit, so I had to implement
-        an entering_syscall flag so that we know when to read output parameters and return value.</li>
-    <li><strong>Execve:</strong> I noticed early on that the entering_syscall flag was being offset on first stop,
-        resulting in garbage output for output parameters and return values. Since the first stop in TRACEME mode is
-        caused by execve, we have to toggle the
-        entering_syscall state without inspecting it as a syscall to avoid said offset.</li>
-</ul>
+    <h2>Challenges & Solutions</h2>
+    <ul>
+        <li><strong>Output Parameters:</strong> Initially, I read all register values except for rax (return value) on
+            syscall entry. This is a flawed approach because many syscalls have a buffer as one or more of their
+            parameters
+            which does not contain useful information until the syscall exits.</li>
+        <li><strong>Tracing State:</strong> ptrace doesn't distinguish between syscall entry and exit, so I had to
+            implement
+            an entering_syscall flag so that we know when to read output parameters and return value.</li>
+        <li><strong>Execve:</strong> I noticed early on that the entering_syscall flag was being offset on first stop,
+            resulting in garbage output for output parameters and return values. Since the first stop in TRACEME mode is
+            caused by execve, we have to toggle the
+            entering_syscall state without inspecting it as a syscall to avoid said offset.</li>
+    </ul>
 
-<h2>Testing</h2>
-<p>The implementation of each syscall was tested by comparing Orlok's output with that of strace for the same binary.
-</p>
+    <h2>Testing</h2>
+    <p>The implementation of each syscall was tested by comparing Orlok's output with that of strace for the same
+        binary.
+    </p>
 
-<h2>Lessons Learned</h2>
-<h3>Initiating Tracing</h3>
-<p>PTRACE_ATTACH works by pausing the specified process using SIGSTOP and requesting that the kernel set the PT_PTRACED
-    flag in the tracee's task_struct. After this, our tracer process is considered the ptrace parent of the tracee which
-    means that it receives all tracing events (stops, signals, exits).</p>
+    <h2>Lessons Learned</h2>
+    <h3>Initiating Tracing</h3>
+    <p>PTRACE_ATTACH works by pausing the specified process using SIGSTOP and requesting that the kernel set the
+        PT_PTRACED
+        flag in the tracee's task_struct. After this, our tracer process is considered the ptrace parent of the tracee
+        which
+        means that it receives all tracing events (stops, signals, exits).</p>
 
-<p>PTRACE_TRACEME sets the PT_PTRACED flag in the current process's task_struct. Execve, the syscall underlying execl,
-    sends SIGTRAP if PT_PTRACED is true. This stops the child after it has replaced its memory with the new process but
-    before it has begun executing, so that the parent can trace it from the beginning of execution.</p>
+    <p>PTRACE_TRACEME sets the PT_PTRACED flag in the current process's task_struct. Execve, the syscall underlying
+        execl,
+        sends SIGTRAP if PT_PTRACED is true. This stops the child after it has replaced its memory with the new process
+        but
+        before it has begun executing, so that the parent can trace it from the beginning of execution.</p>
 
-<p>PTRACE_SYSCALL requests that the kernel resume the process and stop it again at the next syscall boundary (entry or
-    exit), so it gets run twice per syscall in Orlok.</p>
+    <p>PTRACE_SYSCALL requests that the kernel resume the process and stop it again at the next syscall boundary (entry
+        or
+        exit), so it gets run twice per syscall in Orlok.</p>
 
-<p>If the child process exits via calling exit() or exit_group(), running PTRACE_SYSCALL will set errno to ESRCH (No
-    such
-    process). We ignore this entirely in Orlok because the next wait() call will return with WIFEXITED(status) or
-    WIFSIGNALED(status), indicating process killed by exit or signal respectively, and the tracing loop will break
-    properly
-    at that point with wait reaping the zombie.</p>
+    <p>If the child process exits via calling exit() or exit_group(), running PTRACE_SYSCALL will set errno to ESRCH (No
+        such
+        process). We ignore this entirely in Orlok because the next wait() call will return with WIFEXITED(status) or
+        WIFSIGNALED(status), indicating process killed by exit or signal respectively, and the tracing loop will break
+        properly
+        at that point with wait reaping the zombie.</p>
 
-<h3>System Calls & Process Registers</h3>
-<p>The x86_64 calling convention is:</p>
-<ul>
-    <li>Syscall Number: orig_rax</li>
-    <li>Return Value: rax</li>
-    <li>Argument 0: rdi</li>
-    <li>Argument 1: rsi</li>
-    <li>Argument 2: rdx</li>
-    <li>Argument 3: r10</li>
-    <li>Argument 4: r8</li>
-    <li>Argument 5: r9</li>
-</ul>
+    <h3>System Calls & Process Registers</h3>
+    <p>The x86_64 calling convention is:</p>
+    <ul>
+        <li>Syscall Number: orig_rax</li>
+        <li>Return Value: rax</li>
+        <li>Argument 0: rdi</li>
+        <li>Argument 1: rsi</li>
+        <li>Argument 2: rdx</li>
+        <li>Argument 3: r10</li>
+        <li>Argument 4: r8</li>
+        <li>Argument 5: r9</li>
+    </ul>
 
-<p>PTRACE_GETREGS fills a struct of type user_regs_struct with the current values of all CPU registers at the stop
-    point.
-    Each process has its own register state that gets saved by the kernel when changing context and restored when
-    changing
-    back: ptrace requests the copy of the process' registers, it doesn't read from the CPU registers directly.</p>
+    <p>PTRACE_GETREGS fills a struct of type user_regs_struct with the current values of all CPU registers at the stop
+        point.
+        Each process has its own register state that gets saved by the kernel when changing context and restored when
+        changing
+        back: ptrace requests the copy of the process' registers, it doesn't read from the CPU registers directly.</p>
 
-<p>The return value of a raw syscall is -errno on error. This is not apparent immediately as their glibc wrappers (what
-    the
-    manual pages refer to) return -1 on error and set errno directly.</p>
+    <p>The return value of a raw syscall is -errno on error. This is not apparent immediately as their glibc wrappers
+        (what
+        the
+        manual pages refer to) return -1 on error and set errno directly.</p>
 
-<p>I used the Chromium OS syscall tables to reference the System V AMD64 calling conventions for each syscall's register
-    mappings.</p>
+    <p>I used the Chromium OS syscall tables to reference the System V AMD64 calling conventions for each syscall's
+        register
+        mappings.</p>
 
-<a href="https://www.chromium.org/chromium-os/developer-library/reference/linux-constants/syscalls/" target="_blank"
-    rel="noopener noreferrer">Chromium OS Developer Library Syscall Table</a>
+    <h3>Reading a Traced Process' Memory</h3>
+    <p>System calls often take pointers as parameters. Reading these from our parent process is not as simple as
+        dereferencing
+        the pointer because the address is for the traced process's address space, not the parent's. This is where
+        PTRACE_PEEKDATA
+        comes in, PTRACE_PEEKDATA allows us to read memory from another process's address space.</p>
 
-<h3>Reading a Traced Process' Memory</h3>
-<p>System calls often take pointers as parameters. Reading these from our parent process is not as simple as
-    dereferencing
-    the pointer because the address is for the traced process's address space, not the parent's. This is where
-    PTRACE_PEEKDATA
-    comes in, PTRACE_PEEKDATA allows us to read memory from another process's address space.</p>
+    <p>The PTRACE_PEEKDATA mode of ptrace sets errno on error but does not indicate error in its return value (can
+        return -1
+        on
+        success). To handle the ambiguity of PTRACE_PEEKDATA return values (where -1 can be a valid word), I set errno
+        to 0
+        before calling it and checked if errno had changed afterwards.
+    </p>
 
-<p>The PTRACE_PEEKDATA mode of ptrace sets errno on error but does not indicate error in its return value (can return -1
-    on
-    success). To handle the ambiguity of PTRACE_PEEKDATA return values (where -1 can be a valid word), I set errno to 0
-    before calling it and checked if errno had changed afterwards.
-</p>
+    <p>Calling PTRACE_PEEKDATA returns a single word (8 bytes on x86_64) read from the specified address in the tracee's
+        memory.
+        When reading strings using PTRACE_PEEKDATA, we advance by a word per call until the fetched word contains a null
+        byte (which we
+        then terminate at)</p>
 
-<p>Calling PTRACE_PEEKDATA returns a single word (8 bytes on x86_64) read from the specified address in the tracee's
-    memory.
-    When reading strings using PTRACE_PEEKDATA, we advance by a word per call until the fetched word contains a null
-    byte (which we
-    then terminate at)</p>
+    <h2>Future Plans</h2>
+    <p>Pursuing complete feature parity with strace yields diminishing returns education-wise. If anything, I may
+        implement
+        logging of signals.</p>
 
-<h2>Future Plans</h2>
-<p>Pursuing complete feature parity with strace yields diminishing returns education-wise. If anything, I may implement
-    logging of signals.</p>
+    <h2>Further Reading</h2>
+    <ul>
+        <li><a href="https://www.chromium.org/chromium-os/developer-library/reference/linux-constants/syscalls/"
+                target="_blank" rel="noopener noreferrer">Chromium OS Developer Library Syscall Table</a></li>
+        <li><a href="https://man7.org/linux/man-pages/man2/ptrace.2.html" target="_blank"
+                rel="noopener noreferrer">ptrace System Call Manual</a></li>
+    </ul>
 
-<a href="https://github.com/nniemeir/orlok" target="_blank" rel="noopener noreferrer">View Source Code on
-    Github</a>
+    <a href="https://github.com/nniemeir/orlok" target="_blank" rel="noopener noreferrer">View Source Code on
+        Github</a>
 
 </body>
