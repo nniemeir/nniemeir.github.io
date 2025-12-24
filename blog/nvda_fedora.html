@@ -1,18 +1,30 @@
-<h2>NVIDIA on Fedora</h2>
-<h5>Date: 2025-08-22</h5>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>NVIDIA On Fedora | Niemeir Computing</title>
+  <link rel="stylesheet" href="../style.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+
+</head>
+
+<body>
+<h1>NVIDIA on Fedora</h1>
+<h3>Date: 2025-08-22</h3>
 <p>If you installed Fedora on a system with an NVIDIA GPU, you will have reduced graphics performance
     out of the box: the reasons for that are fairly simple. Fedora Linux
     ships a FOSS driver for NVIDIA GPUs called <b>nouveau</b>, developed through some clever reverse
     engineering work beginning in 2005: this was necessary due to NVIDIA's decision not to fully open-source their GPU
     drivers.</p>
 
-<h3>Why Nouveau Doesn't Always Cut It</h3>
+<h2>Why Nouveau Doesn't Always Cut It</h2>
 <p>Nouveau is operating at a disadvantage due to limited access to hardware internals, which results in noticeably worse
     performance and lack of certain features that the user may require (e.g. CUDA). For example, <i>Batman: Arkham
         Knight</i> only gave me 25% of the framerate I achieved on the proprietary driver running on a GTX 1650: this is
     insufficient for users that wish to maximize performance for their hardware.</p>
 
-<h3>Installing NVIDIA's Proprietary Drivers On Fedora</h3>
+<h2>Installing NVIDIA's Proprietary Drivers On Fedora</h2>
 <p>It is advised to follow
     RPM Fusion's <a href="https://rpmfusion.org/Howto/NVIDIA" target="_blank" rel="noopener noreferrer">guide</a> to
     install the
@@ -25,3 +37,5 @@
 <pre class="code-block">
 alias sway='sway --unsupported-gpu'
 </pre>
+
+</body>

@@ -1,3 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Orlok | Niemeir Computing</title>
+  <link rel="stylesheet" href="../style.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+
+</head>
+
+<body>
+<h1>Orlok</h1>
 <p>A minimal strace-like process tracing utility for x86_64 Linux systems. I designed it to obtain a clearer
     understanding
     of how system calls work and how process tracers like strace are able to gather detailed syscall information from
@@ -5,7 +18,7 @@
     ptrace API and the basics of the syscalls being traced (their
     signatures, input and output parameters)</p>
 
-<h3>Tech Stack</h3>
+<h2>Tech Stack</h2>
 <table style="width:100%">
     <tr>
         <th>Category</th>
@@ -37,7 +50,7 @@
     </tr>
 </table>
 
-<h3>Features</h3>
+<h2>Features</h2>
 <ul>
     <li>Tracing an existing process via PID</li>
     <li>Forking a new process to trace</li>
@@ -52,7 +65,7 @@
     </ul>
 </ul>
 
-<h3>Challenges & Solutions</h3>
+<h2>Challenges & Solutions</h2>
 <ul>
     <li><strong>Output Parameters:</strong> Initially, I read all register values except for rax (return value) on
         syscall entry. This is a flawed approach because many syscalls have a buffer as one or more of their parameters
@@ -65,12 +78,12 @@
         entering_syscall state without inspecting it as a syscall to avoid said offset.</li>
 </ul>
 
-<h3>Testing</h3>
+<h2>Testing</h2>
 <p>The implementation of each syscall was tested by comparing Orlok's output with that of strace for the same binary.
 </p>
 
-<h3>Lessons Learned</h3>
-<h4>Initiating Tracing</h4>
+<h2>Lessons Learned</h2>
+<h3>Initiating Tracing</h3>
 <p>PTRACE_ATTACH works by pausing the specified process using SIGSTOP and requesting that the kernel set the PT_PTRACED
     flag in the tracee's task_struct. After this, our tracer process is considered the ptrace parent of the tracee which
     means that it receives all tracing events (stops, signals, exits).</p>
@@ -89,7 +102,7 @@
     properly
     at that point with wait reaping the zombie.</p>
 
-<h4>System Calls & Process Registers</h4>
+<h3>System Calls & Process Registers</h3>
 <p>The x86_64 calling convention is:</p>
 <ul>
     <li>Syscall Number: orig_rax</li>
@@ -118,7 +131,7 @@
 <a href="https://www.chromium.org/chromium-os/developer-library/reference/linux-constants/syscalls/" target="_blank"
     rel="noopener noreferrer">Chromium OS Developer Library Syscall Table</a>
 
-<h4>Reading a Traced Process' Memory</h4>
+<h3>Reading a Traced Process' Memory</h3>
 <p>System calls often take pointers as parameters. Reading these from our parent process is not as simple as
     dereferencing
     the pointer because the address is for the traced process's address space, not the parent's. This is where
@@ -137,9 +150,11 @@
     byte (which we
     then terminate at)</p>
 
-<h3>Future Plans</h3>
+<h2>Future Plans</h2>
 <p>Pursuing complete feature parity with strace yields diminishing returns education-wise. If anything, I may implement
     logging of signals.</p>
 
 <a href="https://github.com/nniemeir/orlok" target="_blank" rel="noopener noreferrer">View Source Code on
     Github</a>
+
+</body>

@@ -1,35 +1,50 @@
-<h2>Study Journal</h2>
-<p>This journal captures small discoveries I've made during my studies—insights worth remembering, even if they don't
-    warrant a full post on their own.</p>
+<!DOCTYPE html>
+<html lang="en">
 
-<h4><strong>2025-08-20:</strong> Audio Permissions In Qt Creator Flatpak</h4>
-<p><em>Tags: #development, #foss, #qt</em></p>
-<p>Running a project with audio in the Qt Creator flatpak (<i>io.qt.QtCreator</i>) will result in a "No audio device
-    detected" message in the application output by default: this is because permission must be manually granted for the
-    program to access
-    the PulseAudio sound server via Flatseal or by running the following command.</p>
-<pre class="code-block">
+<head>
+    <meta charset="UTF-8">
+    <title>Study Journal | Niemeir Computing</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+</head>
+
+<body>
+    <h1>Study Journal</h1>
+    <p>This journal captures small discoveries I've made during my studies—insights worth remembering, even if they
+        don't
+        warrant a full post on their own.</p>
+
+    <h3><strong>2025-08-20:</strong> Audio Permissions In Qt Creator Flatpak</h3>
+    <p><em>Tags: #development, #foss, #qt</em></p>
+    <p>Running a project with audio in the Qt Creator flatpak (<i>io.qt.QtCreator</i>) will result in a "No audio device
+        detected" message in the application output by default: this is because permission must be manually granted for
+        the
+        program to access
+        the PulseAudio sound server via Flatseal or by running the following command.</p>
+    <pre class="code-block">
 flatpak override io.qt.QtCreator --user --socket=pulseaudio
 </pre>
 
-<hr>
+    <hr>
 
-<h4><strong>2025-08-22:</strong> GPS Permissions On Custom Android ROMs</h4>
-<p><em>Tags: #adb, #android, #foss, #gps</em></p>
-<p>Unlike stock Android, custom ROMs like Lineage do not give Google Mobile Services (GMS) location permissions by
-    default. These permissions can be enabled by running the following commands.</p>
-<pre class="code-block">
+    <h3><strong>2025-08-22:</strong> GPS Permissions On Custom Android ROMs</h3>
+    <p><em>Tags: #adb, #android, #foss, #gps</em></p>
+    <p>Unlike stock Android, custom ROMs like Lineage do not give Google Mobile Services (GMS) location permissions by
+        default. These permissions can be enabled by running the following commands.</p>
+    <pre class="code-block">
 adb shell pm grant com.google.android.gms android.permission.ACCESS_COARSE_LOCATION
     
 adb shell pm grant com.google.android.gms android.permission.ACCESS_FINE_LOCATION
 </pre>
 
-<hr>
+    <hr>
 
-<h4><strong>2025-08-22:</strong> Proprietary Firmware on Fedora Linux</h4>
-<p><em>Tags: #fedora, #firmware, #foss, #linux</em></p>
-<p>Fedora has adopted a stricter stance on including proprietary software in the standard repositories in the past two
-    years. RPM fusion free and non-free repos often need to be enabled by following the steps outlined in <a
-        href="https://docs.fedoraproject.org/en-US/quick-docs/rpmfusion-setup/" target="_blank"
-        rel="noopener noreferrer">Fedora's documentation</a> to ensure
-    proper hardware support.</p>
+    <h3><strong>2025-08-22:</strong> Proprietary Firmware on Fedora Linux</h3>
+    <p><em>Tags: #fedora, #firmware, #foss, #linux</em></p>
+    <p>Fedora has adopted a stricter stance on including proprietary software in the standard repositories in the past
+        two
+        years. RPM fusion free and non-free repos often need to be enabled by following the steps outlined in <a
+            href="https://docs.fedoraproject.org/en-US/quick-docs/rpmfusion-setup/" target="_blank"
+            rel="noopener noreferrer">Fedora's documentation</a> to ensure
+        proper hardware support.</p>
+</body>

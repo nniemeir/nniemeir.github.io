@@ -1,7 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cyllenian | Niemeir Computing</title>
+  <link rel="stylesheet" href="../style.css">
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
+</head>
+
+<body>
+<h1>Cyllenian</h1>
 <p>A minimalist HTTPS server that I built to better understand HTTP, SSL, and the POSIX socket API. It proved to be a
     highly educational way to begin exploring low level networking concepts.</p>
 
-<h3>Tech Stack</h3>
+<h2>Tech Stack</h2>
 <table style="width:100%">
     <tr>
         <th>Category</th>
@@ -33,7 +45,7 @@
     </tr>
 </table>
 
-<h3>Features</h3>
+<h2>Features</h2>
 <ul>
     <li><strong>Supported HTTP Methods:</strong></li>
     <ul>
@@ -47,7 +59,7 @@
     <li>Static File Serving</li>
 </ul>
 
-<h3>Challenges & Solutions</h3>
+<h2>Challenges & Solutions</h2>
 <ul>
     <li><strong>Handling binary files:</strong> I initially stored binary file buffers as signed char arrays, which
         resulted in overflow due to the data exceeding the signed char range. Switching to unsigned fixed this.</li>
@@ -56,7 +68,7 @@
         on shutdown.</li>
 </ul>
 
-<h3>Testing</h3>
+<h2>Testing</h2>
 The project was tested manually on each build by ensuring the following:
 <ul>
     <li>CSS and images were rendering properly</li>
@@ -67,7 +79,7 @@ The project was tested manually on each build by ensuring the following:
     <li>Rapid restarts don't result in "Address already in use" error</li>
 </ul>
 
-<h3>Lessons Learned</h3>
+<h2>Lessons Learned</h2>
 <p>HTTP is a text-based protocol, so parsing and constructing headers is simple string manipulation.</p>
 
 <p>The SSL structure and context must be freed in addition to closing the socket file descriptor. Since the user may
@@ -85,9 +97,11 @@ The project was tested manually on each build by ensuring the following:
 <p>Another protocol family supported by the POSIX socket API, PF_UNIX, is widely used on POSIX-like operating systems
     for inter-process communication.</p>
 
-<h3>Future Plans</h3>
+<h2>Future Plans</h2>
 <p>While I consider the project to be mostly feature complete, I plan to add integration testing and epoll support in
     the future.</p>
 
 <a href="https://github.com/nniemeir/cyllenian" target="_blank" rel="noopener noreferrer">View Source Code on
     Github</a>
+
+</body>
