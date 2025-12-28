@@ -1,0 +1,87 @@
+:root {
+  --normal-text-color: #ffffff;
+  --inactive-titlebar: #8b7355;
+  --accent-color: #772314;
+  --chocolate: #4a3f35;
+}
+
+/* Global */
+* {
+  background-color: #000000;
+  color: var(--normal-text-color);
+  scrollbar-width: thin;
+  scrollbar-color: #999 #C6B2A8;
+}
+
+body {
+  font-family: 'Times New Roman', Times, serif;
+  max-width: 80ch;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+a {
+  text-decoration: underline;
+}
+
+a:visited {
+  color: var(--accent-color);
+}
+
+hr {
+  border: 1px solid #d4a853;
+}
+
+pre {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  background-color: #3c3836;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: white;
+  padding: 1rem;
+}
+
+table {
+  margin: 1em 0;
+  width: 100%;
+  background-color: var(--chocolate);
+  border-top: 2px solid #3d3228;
+  border-left: 2px solid #3d3228;
+  border-bottom: 2px solid #5a4a3a;
+  border-right: 2px solid #5a4a3a;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th {
+  padding: 8px 12px;
+  color: #FFFFFF;
+  text-align: left;
+  font-weight: bold;
+  box-shadow: inset 0 -2px 0 #d4a853;
+}
+
+tr:nth-child(even) td {
+  background-color: #3d3228;
+}
+
+td,
+th {
+  padding: 8px 12px;
+  background-color: var(--chocolate);
+  border-top: 1px solid #3d3228;
+  border-left: 1px solid #3d3228;
+  border-bottom: 1px solid #5a4a3a;
+  border-right: 1px solid #5a4a3a;
+}
+
+ul {
+  list-style-type: "-- ";
+  padding-left: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+li {
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
