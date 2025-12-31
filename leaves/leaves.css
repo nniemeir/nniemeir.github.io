@@ -1,13 +1,13 @@
 :root {
   --normal-text-color: #ffffff;
   --inactive-titlebar: #8b7355;
-  --accent-color: #772314;
+  --accent-color: #cd853f;
   --chocolate: #4a3f35;
 }
 
 /* Global */
 * {
-  background-color: #000000;
+  background-color: #1a1410;
   color: var(--normal-text-color);
   scrollbar-width: thin;
   scrollbar-color: #999 #C6B2A8;
@@ -29,7 +29,7 @@ a:visited {
 }
 
 hr {
-  border: 1px solid #d4a853;
+  border: 1px solid var(--accent-color);
 }
 
 pre {
