@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Euclid | Niemeir Computing</title>
+    <link rel="stylesheet" href="../computing.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+
+</head>
+
+<body>
+    <h1>Euclid</h1>
+    <p>Project demonstrating container isolation techniques via namespaces, cgroups,
+        and seccomp. My motivation in creating this is that I have found that I work best with abstractions, Docker in
+        this instance, if I understand the underlying concepts.</p>
+    <h2>Tech Stack</h2>
+    <table style="width:100%">
+        <tr>
+            <th>Category</th>
+            <th>Technology Used</th>
+        </tr>
+        <tr>
+            <td>Language</td>
+            <td>C</td>
+        </tr>
+        <tr>
+            <td>Compiler</td>
+            <td>GCC</td>
+        </tr>
+        <tr>
+            <td>Build System</td>
+            <td>GNU Make</td>
+        </tr>
+        <tr>
+            <td>Libraries</td>
+            <td>Standard C Library, Linux kernel headers</td>
+        </tr>
+        <tr>
+            <td>Operating System</td>
+            <td>x86_64 Linux</td>
+        </tr>
+        <tr>
+            <td>License</td>
+            <td>GNU General Public License V2</td>
+        </tr>
+    </table>
+    <h2>Features</h2>
+    <p>Creates an isolated execution environment via:</p>
+    <ul>
+        <li><strong>Namespace isolation:</strong> Separate UTS (hostname), PID, mount, network, and IPC namespaces</li>
+        <li><strong>Resource limits:</strong> CPU, memory, swap, and pid restrictions through cgroups v2</li>
+        <li><strong>Syscall filtering:</strong> Whitelist-based syscall filtering through seccomp-bpf</li>
+        <li><strong>Filesystem isolation:</strong> Separate read-only root filesystem through the pivot_root syscall
+            and
+            tmpfs/overlayfs</li>
+        <li><strong>Capability dropping:</strong> Removes all Linux capabilities from the sandboxed process</li>
+    </ul>
+    <h2>Challenges & Solutions</h2>
+    <h3>Adding Processes To Cgroups</h3>
+    <p>The child process should be added to the cgroup before it is
+        allowed to do anything else because we do not want it to run without those restrictions in place even
+        temporarily. We have to configure the cgroup limits
+        in the parent before having the child add itself to the cgroup, so we needed a way to signal from the parent
+        to the child that configuration is complete. It is considered best practice to have the child add itself to
+        the cgroup since it knows its PID before clone() returns in the parent. I opted to create a pipe in the
+        parent and store its file
+        descriptors in the configuration struct that gets passed to the child process. The child waits to read a
+        single byte from the pipe, which the parent writes when it finishes configuring the cgroup.</p>
+    <h3>Enabling Cgroup Controllers</h3>
+    <p>Cgroup controllers are the kernel subsystem used to
+        manage a particular resource within a given cgroup. It took an embarrassing amount of time to get this right in
+        my implementation. I created the cgroup before writing
+        to the immediate parent's subtree_control and was confused why it wasn't enforcing. I tried writing to the new
+        cgroup's subtree_control
+        instead and was equally confused that it wasn't enforcing. Here is the actual process. Before creating a cgroup,
+        you must enable the controllers that you will be using
+        in the immediate parent's cgroup.subtree_control file. We write the following to said file to enable the CPU,
+        memory, and PID controllers in Euclid:</p>
+    <pre class="code-block">+cpu +memory +pids</pre>
+    <h3>Memory Isolation</h3>
+    <p>Like fork(), the clone() syscall creates a child task (a process
+        or thread). The key difference between the two is that clone() allows for fine-grained control over what
+        attributes of the parent get shared to the child. This makes it the natural choice for containerization
+        because it allows us to create new namespaces for the task. Tasks in Linux have their own kernel and user
+        stacks, which adds a bit of complexity to how we manage our configuration variables for the container.
+        clone() does allow for the parent and child to share the same memory space via the CLONE_VM flag, but this
+        would be a security nightmare for a container as we'd be creating a thread rather than an isolated process.
+    </p>
+    <p>Without the CLONE_VM flag, the child gets a copy of the parent's heap (see Copy-on-write section of Lessons
+        Learned). This allows
+        us to allocate a struct containing our configuration variables on the heap and pass a pointer to that struct
+        to clone(). Since the child's address space gets destroyed entirely on its exit, we only need to free the
+        struct in the parent.
+    </p>
+    <h3>Seccomp BPF length</h3>
+    <p>Seccomp-bpf allows for filtering syscalls using bytecode based on
+        Berkeley Packet Filter syntax. While the syntax is not that verbose, the filter became unwieldy at nearly
+        100 syscalls. Since allowing a syscall consists of two instructions that differ only by the syscall number,
+        I defined a macro to reduce the filter length.</p>
+    <pre class="code-block">
+#define ALLOW(syscall)                                                         
+    BPF_JUMP(BPF_JMP | BPF_JEQ | BPF_K, syscall, 0, 1),                          
+    BPF_STMT(BPF_RET | BPF_K, SECCOMP_RET_ALLOW)</pre>
+    <p>This translates to:</p>
+    <ol>
+        <li>If the value in the accumulator is equal to the constant syscall, jump 0 lines. Else, jump 1
+            line.</li>
+        <li>Return SECCOMP_RET_ALLOW if jumping 0 lines, else fall through to the next syscall.</li>
+    </ol>
+
+    <h2>Lessons Learned</h2>
+    <h3>What Each Namespace Isolates</h3>
+    <p>This is the core concept of containerization. Namespaces were introduced as a mechanism within the Linux kernel
+        back in 2002 to isolate resources that are normally global. While there are currently 8 supported namespace
+        types, Euclid only concerns itself with 5 of them:</p>
+    <ul>
+        <li><strong>IPC:</strong> System V Interprocess Communication and POSIX message queues</li>
+        <li><strong>NET:</strong> Resources related to networking such as network devices, sockets, and firewall rules
+        </li>
+        <li><strong>NS:</strong> Mount table</li>
+        <li><strong>PID:</strong> The PID number space. On the regular Linux host, the PID 1 is occupied by the init
+            system. PID namespaces differ in that the first process created within them, our target process in this
+            case, gets the PID 1</li>
+        <li><strong>UTS:</strong> The hostname and the NIS domain name</li>
+    </ul>
+    <p>There are generally many instances of a namespace type running on a given system. Since container runtimes want
+        their resource usage to be isolated from the rest of the system, the clone() system call is used to create new
+        namespaces for the target application. If we wanted to join a process to an existing namespace, we would use
+        the setns() system call. The only namespace type that setns() does not work on is PID, because PID namespace
+        membership is fixed when a process is created.</p>
+    <h3>OverlayFS</h3>
+    <p>This really intrigued me. OverlayFS is a type of union filesystem, meaning that it combines multiple directories
+        into a single view. In the case of OverlayFS, four directories are relevant:</p>
+    <ul>
+        <li>upperdir: The writable directory for modifications</li>
+        <li>lowerdir: The read-only directory</li>
+        <li>workdir: A workspace for atomic file operations</li>
+        <li>merged: The directory that will contain the combined view</li>
+    </ul>
+    <p>We use OverlayFS in Euclid to give the user the illusion of altering the rootfs while
+        the modifications that they are making are actually being written to the upperdir that we have mounted within a
+        tmpfs.</p>
+    <h3>Tmpfs</h3>
+    <p>Another fascinating kernel mechanism. Tmpfs is a filesystem that stores its files within RAM and swap space
+        rather than on disk. It follows that the /tmp directory uses tmpfs, but this is not always true. Some systems,
+        such as those running older distributions or having been configured intentionally to operate as such, use a
+        directory on disk for /tmp.</p>
+    <p>As indicated in the previous section, the filesystem writes that occur within our container in Euclid are
+        confined to a tmpfs. This choice was made for a few reasons. It serves to isolate the container from the host
+        filesystem, allows for quicker reading and writing because RAM is significantly faster than disk, and the tmpfs
+        disappears when the container exits.</p>
+    <h3>Copy-on-write (COW)</h3>
+    <p>When you run fork() or clone() without the latter using the CLONE_VM flag, the kernel makes use of this
+        fascinating optimization. The kernel marks the pages in the parent's virtual address space, which is shared with
+        the child, as read-only. If either the parent or child attempts to write to one of those pages, a new page is
+        allocated. The primary motivation for implementing this was that part of the way fork()
+        duplicates a process is by copying its entire virtual address space, but is most often followed by the exec()
+        syscall,
+        which replaces the calling process with another: this means that the copying would usually be wasteful.</p>
+    <h3>Chroot & pivot_root</h3>
+    <p>Every process has a struct of type fs_struct in the kernel, which contains the task's filesystem context
+        including a pointer to the
+        path of the root filesystem as recognized by the process. The chroot syscall changes that pointer to the path
+        specified, which makes it lacking for security purposes because the old pointer could still potentially be
+        accessed.</p>
+
+    <p>The pivot_root syscall is quite different from chroot. Rather than working on the process level, it changes the
+        root mount in the mount namespace that it is called within. pivot_root does not make the old root mount
+        inaccessible on its own, it moves it to a specified
+        directory under the new root mount. If we want to hide the old root mount, we must unmount it manually.</p>
+
+    <h2>Testing</h2>
+    <ul>
+        <li><strong>Seccomp Enforcing:</strong> Seccomp killing a process for attempting to use a non-whitelisted
+            syscall is the most common use case for signal 31 (SIGSYS), so I added a specific case for the message
+            "Likely seccomp violation" is
+            printed if this occurs. To test that the filter is functioning as intended, I temporarily removed the read()
+            syscall from the whitelist and verified that the message appeared.</li>
+        <li><strong>Cgroup Enforcing:</strong> When a process is killed for attempting to allocating more memory than we
+            have set in memory.max, Cgroups increments the oom_kill field in the memory.events file in our cgroup
+            directory. My method for testing this was to set memory.max to 1KB before trying to run a shell within the
+            container, then verifying that oom_kill had incremented.</li>
+        <li><strong>OverlayFS Functioning:</strong>Verified that writes to the upper layer do not affect the lower layer
+            by creating directories in the merged view with the container's shell and confirming that they did not
+            appear in the lower layer, then deleting /tmp with the container's shell and confirming that it was still
+            present in the lower layer.
+        </li>
+        <li><strong>Verifying Namespace Membership:</strong> The kernel exposes the IDs of each namespace that a process
+            is a member of through symlinks in the /proc/PID/ns/ directory. The most straightforward way to check each
+            namespace at once is by running the command ls -l /proc/PID/ns/, which will show you the IDs at the end of
+            each line. Verifying that the parent and the child were in different namespaces was as simple as comparing
+            the output of that command for the parent's PID and the child's PID, the latter of which I temporarily added
+            a printf statement in the parent to display after clone().</li>
+    </ul>
+
+    <h2>Future Plans</h2>
+    <p>I consider this project to be feature complete for what I intended to learn, but I have been considering using
+        what
+        I
+        learned here to write a cgroups wrapper in Python for testing low memory conditions via memory.high (triggers
+        throttling) and memory.max (kills with OOM).</p>
+    <h2>Further Reading</h2>
+    <ul>
+        <li><a href="https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/cgroups.html" target="_blank"
+                rel="noopener noreferrer">Linux Kernel Documentation - Control Groups </a></li>
+        <li><a href="https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html" target="_blank"
+                rel="noopener noreferrer">Linux Kernel Documentation - Overlay Filesystem</a></li>
+        <li><a href="https://www.kernel.org/doc/html/latest/filesystems/tmpfs.html" target="_blank"
+                rel="noopener noreferrer">Linux Kernel Documentation - Tmpfs</a></li>
+        <li><a href="https://www.man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank"
+                rel="noopener noreferrer">Capabilities Manual</a></li>
+        <li><a href="https://www.man7.org/linux/man-pages/man7/namespaces.7.html" target="_blank"
+                rel="noopener noreferrer">Namespaces Manual</a></li>
+        <li><a href="https://www.man7.org/linux/man-pages/man2/prctl.2.html" target="_blank"
+                rel="noopener noreferrer">prctl Manual</a></li>
+        <li><a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux_atomic_host/7/html/container_security_guide/linux_capabilities_and_seccomp"
+                target="_blank" rel="noopener noreferrer">Red Hat Documentation - Linux Capabilities and Seccomp</a>
+        </li>
+    </ul>
+    <a href="https://github.com/nniemeir/euclid" target="_blank" rel="noopener noreferrer">View Source Code on
+        Github</a>
+</body>
+
+</html>
